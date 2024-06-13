@@ -1,0 +1,68 @@
+name: Human Benchmark
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  CI: true
+
+jobs:
+
+  check-commit-message:
+    name: Проверка текста коммита🕵️
+    runs-on: ubuntu-latest
+    steps:
+      - name: Проверка текста коммита🕵️
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: '\[[A-Za-z0-9]+\]\sMLTL-[0-9]+\s([A-Za-z]+( [A-Za-z]+)+)'
+          flags: 'gm'
+          error: 'Текст коммита должен быть в формате [TEXT] HMBM-9999 Commit message'
+
+  branch-naming-rules:
+    name: Проверка имени ветки🕵️
+    runs-on: ubuntu-latest
+    steps:
+      - name: Проверка имени ветки🕵️
+        uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: 'feature\/HMBM-[0-9]+'
+          allowed_prefixes: 'feature,stable,fix'
+          ignore: master,develop
+
+  build:
+    name: Собираем наш проект🛠️
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Используем Node.js ${{ matrix.node-version }}✅
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Запускаем make install 👁️
+        run: make install
+      - name: Запускам линтер 🧹
+        run: make lint
+      - name: Прогоняем тесты 📈
+        run: make test
+#      - name: Публикуем coverage 📤
+#        uses: paambaati/codeclimate-action@v3.0.0
+#        env:
+#          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+#        with:
+#          coverageCommand: make test-coverage
+#          debug: true
+#          coverageLocations: |
+#            ${{github.workspace}}/*.lcov:lcov
