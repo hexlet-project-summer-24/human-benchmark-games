@@ -33,7 +33,7 @@ jobs:
         with:
           regex: 'feature\/HMBM-[0-9]+'
           allowed_prefixes: 'feature,stable,fix'
-          ignore: master,develop
+          ignore: main,develop
 
   build:
     name: Собираем наш проект🛠️
