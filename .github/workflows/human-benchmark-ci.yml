@@ -20,7 +20,7 @@ jobs:
       - name: Проверка текста коммита🕵️
         uses: gsactions/commit-message-checker@v2
         with:
-          pattern: '\[[A-Za-z0-9]+\]\sMLTL-[0-9]+\s([A-Za-z]+( [A-Za-z]+)+)'
+          pattern: '\[[A-Za-zА-Яа-я0-9]+\]\HMBM-[0-9]+\s([А-Яа-яA-Za-z]+( [А-Яа-яA-Za-z]+)+)'
           flags: 'gm'
           error: 'Текст коммита должен быть в формате [TEXT] HMBM-9999 Commit message'
 
