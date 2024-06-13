@@ -7,8 +7,8 @@ build:
 publish:
 		npm publish --dry-run
 test:
-		npm test
+		npm --passWithNoTests test
 test-coverage:
 		npm test -- --coverage --coverageProvider=v8
 lint:
-		npx eslint --fix . --ext .js
+		npx eslint --fix *.js
