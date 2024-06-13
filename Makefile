@@ -7,7 +7,7 @@ build:
 publish:
 		npm publish --dry-run
 test:
-		npm test --passWithNoTests
+		npm --passWithNoTests test
 test-coverage:
 		npm test -- --coverage --coverageProvider=v8
 lint:
