@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="./img/bolt-favicon.ico"
+      type="image/x-icon"
+    />
+
     <title>Reaction Time Test</title>
     <!-- Font Awesome -->
     <link
@@ -25,25 +31,32 @@
   <body>
     <header>
       <nav>
-        <a class="home-btn" href="#">HUMAN BENCHMARK</a>
+        <a class="home-link" href="#">
+          <i
+            class="fa-solid fa-bolt-lightning"
+            style="color: #c0c0c0; font-size: 15px"
+          ></i>
+          HUMAN BENCHMARK
+        </a>
       </nav>
     </header>
-
-    <div id="click-box" class="container-fluid bg-primary text-light">
-      <img
-        src="./img/lightning.png"
-        class="blinking-icon"
-        alt="lightning icon"
-      />
-      <div class="click-box-text">
-        <h1 id="main-header">Reaction Time Test</h1>
-        <div class="text-center fs-4 instructions">
-          <p>When the red box turns green, click as quickly as you can.</p>
-          <p>Click anywhere to start.</p>
+    <section class="unselectable">
+      <div id="click-box" class="container-fluid bg-primary text-light">
+        <i
+          id="main-icon"
+          class="fa-solid fa-bolt-lightning blinking-icon fade-in-up"
+          style="color: #ffffff"
+        ></i>
+        <div class="fade-in-up">
+          <h1 id="main-header">Reaction Time Test</h1>
+          <div class="text-center fs-4 instructions">
+            <p>When the red box turns green, click as quickly as you can.</p>
+            <p>Click anywhere to start.</p>
+          </div>
         </div>
+        <p id="endgame-text" class="fs-3"></p>
       </div>
-      <p id="endgame-text" class="fs-3"></p>
-    </div>
+    </section>
 
     <!-- MDB -->
     <script

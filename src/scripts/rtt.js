@@ -1,7 +1,7 @@
 const clickBox = document.getElementById('click-box');
 const bigText = document.getElementById('main-header');
 const instructions = document.querySelector('.instructions');
-const icon = document.querySelector('.blinking-icon');
+const icon = document.getElementById('main-icon');
 const endgameText = document.getElementById('endgame-text');
 let startTime;
 let timeout;
@@ -26,7 +26,8 @@ const startGame = () => {
 
 const abortGame = () => {
   clearTimeout(timeout);
-  updateGameBox('bg-primary', 'Too soon!', 'none', 'none', 'block');
+  updateGameBox('bg-primary', 'Too soon!', 'block', 'none', 'block');
+  icon.className = `fa-solid fa-triangle-exclamation static-icon`;
   endgameText.textContent = 'Click to try again.';
   gameStarted = false;
 };
@@ -37,7 +38,8 @@ const endGame = () => {
   bigText.textContent = `${reactionTimeInMs} ms`;
   endgameText.textContent = 'Click to keep going';
   clearTimeout(timeout);
-  updateGameBox('bg-primary', bigText.textContent, 'none', 'none', 'block');
+  updateGameBox('bg-primary', bigText.textContent, 'block', 'none', 'block');
+  icon.className = `fa-solid fa-clock static-icon`;
   gameStarted = false;
 };
 
