@@ -70,7 +70,7 @@ body {
   animation: fadeIn 0.7s ease-out 0.4s forwards;
 }
 
-p ~ p {
+.instructions p:nth-of-type(2) {
   margin-top: -1em;
 }
 
@@ -99,6 +99,63 @@ nav {
 .static-icon {
   font-size: 5em;
   margin-bottom: 20px;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  gap: 30px;
+}
+
+.text-block {
+  height: 47em;
+  width: 30em;
+  padding: 30px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 1px #d6d6d6;
+}
+
+.text-block > p {
+  font-size: 18px;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+footer > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 61em;
+  margin: 5% 0 0;
+}
+
+.info {
+  width: 300px;
+  text-align: right;
+  font-size: 14px;
+  opacity: 75%;
+}
+
+.links p:nth-child(n+1) {
+  margin-top: -1em;
 }
 
 /* Цвета для click-box */
