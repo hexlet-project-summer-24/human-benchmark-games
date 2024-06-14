@@ -24,6 +24,13 @@ const startGame = () => {
   }, Math.random() * 4000 + 1000); // Случайное время от 1 до 5 секунд
 };
 
+const abortGame = () => {
+  clearTimeout(timeout);
+  updateGameBox('bg-primary', 'Too soon!', 'none', 'none', 'block');
+  endgameText.textContent = 'Click to try again.';
+  gameStarted = false;
+};
+
 const endGame = () => {
   const endTime = new Date().getTime();
   const reactionTimeInMs = endTime - startTime;
@@ -40,7 +47,9 @@ clickBox.addEventListener('click', () => {
   if (!gameStarted) {
     gameStarted = true;
     startGame();
-  } else if (backgroundColor === 'rgb(0, 128, 0)') { // Проверка на зеленый цвет
+  } else if (backgroundColor === 'rgb(48, 156, 48)') { // 🟩 Проверка на ЗЕЛЕНЫЙ цвет
     endGame();
+  } else if (backgroundColor === 'rgb(185, 43, 43)') { // 🟥 Проверка на КРАСНЫЙ цвет
+    abortGame();
   }
 });
