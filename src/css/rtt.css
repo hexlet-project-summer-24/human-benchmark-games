@@ -70,22 +70,31 @@ body {
   animation: fadeIn 0.7s ease-out 0.4s forwards;
 }
 
-.instructions p:nth-of-type(2) {
-  margin-top: -1em;
+.instructions {
+  line-height: 0.5;
 }
 
 nav {
   display: flex;
-  align-items: center;
   height: 50px;
   background-color: #ffffff;
+}
+
+.link-block {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 10px;
+  height: 50px;
+}
+
+.link-block:hover {
+  background-color: #f0f0ff;
 }
 
 .home-link {
   text-decoration: none;
   color: black;
   font-size: 20px;
-  margin-left: 1em;
 }
 
 .blinking-icon {
@@ -152,10 +161,7 @@ footer > section {
   text-align: right;
   font-size: 14px;
   opacity: 75%;
-}
-
-.links p:nth-child(n+1) {
-  margin-top: -1em;
+  line-height: 0.7;
 }
 
 /* Цвета для click-box */
