@@ -1,0 +1,18 @@
+body {
+    height: 100vh;
+}
+
+.cube_deafult {
+    background-color: blue;
+}
+
+.cube_correct {
+    background-color: green;
+}
+
+.cube_wrong {
+    background-color: red;
+}
+
+
+
