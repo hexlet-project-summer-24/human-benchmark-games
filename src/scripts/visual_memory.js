@@ -1,12 +1,13 @@
-let cubeMatrixState = {
+const cubeMatrixState = {
     pressedCorrect: [],
-    isWin: false,
+    winCount: 0,
     pressedMistakes: [],
     mistakesCount: 0,
     isDie: false,
     correctIds: [],
-    resolution: 3,
-    isPreview: true,    
+    resolution: 5,
+    isPreview: true, 
+    gameEndFunc: null   
 }
 
 function countOfCorrectCubes () {
@@ -25,8 +26,8 @@ function createCubeMatrix () {
     let resolution = cubeMatrixState.resolution
     const cubeMatrix = document.createElement('div');
     cubeMatrix.id = 'cubeMatrix'
-    cubeMatrix.classList.add('d-flex','justify-content-center','flex-column','h-100');
-    const cubeMatrixSize = 450;
+    cubeMatrix.classList.add('d-flex','justify-content-center','flex-column');
+    const cubeMatrixSize = 380;
     const cubeSize = cubeMatrixSize / resolution + 'px'
     let cubeId = 0;
     for (let h = 0; h < resolution; h++) {
@@ -37,6 +38,8 @@ function createCubeMatrix () {
             cube.classList.add('cube_deafult');
             cube.style.height = cubeSize;
             cube.style.width = cubeSize;
+            cube.style.borderRadius = cubeMatrixSize / resolution / 8 + 'px'
+            cube.style.borderWidth = cubeMatrixSize / resolution / 15 + 'px'
             cube.id = cubeId;
             cubeId++;
             cube.addEventListener('click', cubeClick)
@@ -44,6 +47,7 @@ function createCubeMatrix () {
         }
         cubeMatrix.appendChild(line);
     }
+
     document.getElementById("header").appendChild(cubeMatrix);
 }
 
@@ -54,25 +58,40 @@ function cubeClick () {
         const correctIds = cubeMatrixState.correctIds;
         const pressedCorrect = cubeMatrixState.pressedCorrect;
         const pressedMistakes = cubeMatrixState.pressedMistakes
+        cubeEl.classList.add('click')
+        setTimeout(() => cubeEl.classList.remove('click'), 100);
         if (!pressedCorrect.includes(cubeId) || !pressedMistakes.includes(cubeId)) {
             if (correctIds.includes(cubeId)) {
                 pressedCorrect.push(cubeId)
-                cubeEl.style.backgroundColor = 'green';
+                cubeEl.style.backgroundColor = '#1f1f1f';
                 if (JSON.stringify(correctIds.sort()) == JSON.stringify(pressedCorrect.sort())) {
                     cubeMatrixState.isWin = true
-                    fillAllCubes('green')
+                    fillAllCubes('#1f1f1f')
+                    cubeMatrixState.isPreview = true
                     setTimeout(()=> {
                         document.getElementById('cubeMatrix').remove()
-                    },3000)
+                        cubeMatrixState.gameEndFunc()
+                    },1000)
                 }
             } else {
                 pressedMistakes.push(cubeId)
-                cubeEl.style.backgroundColor = 'red';
+                cubeEl.style.backgroundColor = '#194264';
                 cubeMatrixState.mistakesCount++;
+
+                const miss = document.getElementById('miss')
+                miss.style.display = 'block'
+                setTimeout(() => miss.style.display = 'none', 200)
+
+
                 if (cubeMatrixState.pressedMistakes.length > 2) {
-                    fillAllCubes('red');
-                    cubeMatrixState.isPreview = true;
                     cubeMatrixState.isDie = true;
+                    fillAllCubes('#194264');
+                    cubeMatrixState.isPreview = true;
+                    setTimeout(()=> {
+                        document.getElementById('cubeMatrix').remove()
+                        cubeMatrixState.gameEndFunc()
+                    },1000)
+                    
                 }
             }
 
@@ -80,6 +99,43 @@ function cubeClick () {
         }
         console.log(cubeMatrixState)
     }
+}
+
+
+function createGameInfo () {
+    const gameInfo = document.createElement('div');
+    gameInfo.className = 'level-container';
+    const levelSpan = document.createElement('span');
+    const levelTextSpan = document.createElement('span');
+    levelTextSpan.textContent = 'Level';
+    levelTextSpan.className = 'level-text';
+    const levelValueSpan = document.createElement('span');
+    levelValueSpan.textContent = '1';
+    levelValueSpan.id = 'level-score';
+    levelSpan.appendChild(levelTextSpan);
+    levelSpan.appendChild(levelValueSpan);
+    const livesDiv = document.createElement('div');
+    const livesTextSpan = document.createElement('span');
+    livesTextSpan.textContent = 'Lives';
+    livesTextSpan.className = 'lives-text';
+    const live1 = document.createElement('i');
+    live1.className = 'fa-solid fa-heart';
+    live1.id = 'live-1';
+    const live2 = document.createElement('i');
+    live2.className = 'fa-solid fa-heart';
+    live2.id = 'live-2';
+    const live3 = document.createElement('i');
+    live3.className = 'fa-solid fa-heart';
+    live3.id = 'live-3';
+    livesDiv.appendChild(livesTextSpan);
+    livesDiv.appendChild(live1);
+    livesDiv.appendChild(live2);
+    livesDiv.appendChild(live3);
+
+    gameInfo.appendChild(levelSpan);
+    gameInfo.appendChild(livesDiv);
+
+    document.getElementById("header").appendChild(gameInfo);
 }
 
 function getRandomInt(max) {return Math.floor(Math.random() * max)}
@@ -104,7 +160,9 @@ function randomCubesId (idCounts) {
 function previewCorrectCubes (correctCubeIds) {
     for (let id of correctCubeIds) {
         let cube = document.getElementById(id);
-        cube.style.backgroundColor = 'green';
+        cube.style.backgroundColor = '#1f1f1f';
+        cube.classList.add('click')
+        setTimeout(() => cube.classList.remove('click'), 500);
     }
 }
 
@@ -118,22 +176,59 @@ function fillAllCubes (color) {
 
 function gameIteration () {
     let resolution = cubeMatrixState.resolution
-
-    window.addEventListener('DOMContentLoaded', () => {
+    return new Promise ((stopGame) => {
+        cubeMatrixState.gameEndFunc = stopGame;
         cubeMatrixState.correctIds = randomCubesId(countOfCorrectCubes().basic)
         createCubeMatrix()
-        previewCorrectCubes(cubeMatrixState.correctIds)
         setTimeout(() => {
-            fillAllCubes('blue');
+            previewCorrectCubes(cubeMatrixState.correctIds)
+        },300)
+        setTimeout(() => {
+            fillAllCubes('#2e73b6');
             cubeMatrixState.isPreview = false;
-        } , 3000)  
-
+        } , 2000)  
     })
+
 }
 
+function cubeMatrixStateEdit (resolution) {
+    cubeMatrixState = {
+        pressedCorrect: [],
+        isWin: false,
+        pressedMistakes: [],
+        mistakesCount: 0,
+        isDie: false,
+        correctIds: [],
+        resolution: resolution,
+        isPreview: true, 
+        gameEndFunc: null   
+    }
+}
 
 
 async function mainGame () {
+    console.log('игра 1')
+    createGameInfo()
     await gameIteration(cubeMatrixState.resolution, countOfCorrectCubes().basic);
+    console.log('игра 2')
     await gameIteration(cubeMatrixState.resolution, countOfCorrectCubes().hard);
 }
+
+
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('play-btn').addEventListener('click', () => {
+    document.getElementById('play-screen').remove()
+    mainGame();
+})
+})
+
+/*
+3)При 3 промахах - 1 жизн и уровень перезапускается
+4)При запуске уровня проверяется не проиграли ли мы (всего 3 жизни)
+5)Сохраняется номер уровня и кол-во жизней 
+
+
+*/
+
