@@ -1,4 +1,4 @@
-let cubeMatrixState = {
+const cubeMatrixState = {
     pressedCorrect: [],
     pressedMistakes: [],
     mistakesCount: 0,
@@ -109,7 +109,6 @@ function cubeClick () {
 
         }
         console.log(cubeMatrixState)
-        console.log(gameState)
     }
 }
 
@@ -197,6 +196,43 @@ function countOfCorrectCubes (difficulty) {
         case (3): return Math.round(resolution * resolution / 100 * 50)
         case (4): return Math.round(resolution * resolution / 100 * 70)
     }
+}
+
+
+function createGameInfo () {
+    const gameInfo = document.createElement('div');
+    gameInfo.className = 'level-container';
+    const levelSpan = document.createElement('span');
+    const levelTextSpan = document.createElement('span');
+    levelTextSpan.textContent = 'Level';
+    levelTextSpan.className = 'level-text';
+    const levelValueSpan = document.createElement('span');
+    levelValueSpan.textContent = '1';
+    levelValueSpan.id = 'level-score';
+    levelSpan.appendChild(levelTextSpan);
+    levelSpan.appendChild(levelValueSpan);
+    const livesDiv = document.createElement('div');
+    const livesTextSpan = document.createElement('span');
+    livesTextSpan.textContent = 'Lives';
+    livesTextSpan.className = 'lives-text';
+    const live1 = document.createElement('i');
+    live1.className = 'fa-solid fa-heart';
+    live1.id = 'live-1';
+    const live2 = document.createElement('i');
+    live2.className = 'fa-solid fa-heart';
+    live2.id = 'live-2';
+    const live3 = document.createElement('i');
+    live3.className = 'fa-solid fa-heart';
+    live3.id = 'live-3';
+    livesDiv.appendChild(livesTextSpan);
+    livesDiv.appendChild(live1);
+    livesDiv.appendChild(live2);
+    livesDiv.appendChild(live3);
+
+    gameInfo.appendChild(levelSpan);
+    gameInfo.appendChild(livesDiv);
+
+    document.getElementById("header").appendChild(gameInfo);
 }
 
 function getRandomInt(max) {return Math.floor(Math.random() * max)}
