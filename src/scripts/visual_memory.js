@@ -100,7 +100,7 @@ function cubeClick () {
                             gameState.isDie = true
                             document.getElementById('gameInfo').remove()
                             createGameOver(gameState.level)
-                            //Тут отправляем статистику и выводим экран проиграл
+                            //тут кидаем gameState.level в бд статистики
                         }
                     },1000)
                     
