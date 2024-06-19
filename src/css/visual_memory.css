@@ -2,7 +2,7 @@ body {
     height: 100vh;
 }
 
-.miss {
+.indicator {
   display: none;
   position: fixed;
   top: 0;
@@ -11,14 +11,14 @@ body {
   height: 50%;
   background-color: rgb(255, 0, 0);
   opacity: 20%;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
   z-index: 9999;
 }
 
 
 header {
     background-color: #3284c8;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 header.wrong {
@@ -29,11 +29,12 @@ header.wrong {
     background-color: #2e73b6;
     border-color: #3284c8;
     border-style: solid;
-    transition: transform 0.1s ease-in-out;
+    transition: transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: background-color 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .cube_deafult.click {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 .fa-heart {
     font-size: 30px;

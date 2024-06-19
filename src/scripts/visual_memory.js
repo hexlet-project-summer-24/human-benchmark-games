@@ -1,29 +1,25 @@
-const cubeMatrixState = {
+let cubeMatrixState = {
     pressedCorrect: [],
-    winCount: 0,
     pressedMistakes: [],
     mistakesCount: 0,
-    isDie: false,
     correctIds: [],
-    resolution: 5,
+    resolution: 3,
     isPreview: true, 
-    gameEndFunc: null   
+    iswin: false,
+    gameEndFunc: null,   
 }
 
-function countOfCorrectCubes () {
-    const resolution = cubeMatrixState.resolution
-    return {
-        basic: Math.round(resolution * resolution / 100 * 30),
-        easy: Math.round(resolution * resolution / 100 * 40),
-        medium: Math.round(resolution * resolution / 100 * 50),
-        hard: Math.round(resolution * resolution / 100 * 70)
-    }
-
+let gameState = {
+    isDie: false,
+    lives: 3,
+    level: 1,
+    difficulty: 1,
+    resolution: 3
 }
-
 
 function createCubeMatrix () {
-    let resolution = cubeMatrixState.resolution
+    console.log(gameState.resolution)
+    let resolution = gameState.resolution
     const cubeMatrix = document.createElement('div');
     cubeMatrix.id = 'cubeMatrix'
     cubeMatrix.classList.add('d-flex','justify-content-center','flex-column');
@@ -49,6 +45,9 @@ function createCubeMatrix () {
     }
 
     document.getElementById("header").appendChild(cubeMatrix);
+
+    const levelNum = document.getElementById('level-score')
+    levelNum.textContent = gameState.level
 }
 
 function cubeClick () {
@@ -60,36 +59,49 @@ function cubeClick () {
         const pressedMistakes = cubeMatrixState.pressedMistakes
         cubeEl.classList.add('click')
         setTimeout(() => cubeEl.classList.remove('click'), 100);
+        const indicator = document.getElementById('indicator')
         if (!pressedCorrect.includes(cubeId) || !pressedMistakes.includes(cubeId)) {
             if (correctIds.includes(cubeId)) {
                 pressedCorrect.push(cubeId)
                 cubeEl.style.backgroundColor = '#1f1f1f';
                 if (JSON.stringify(correctIds.sort()) == JSON.stringify(pressedCorrect.sort())) {
                     cubeMatrixState.isWin = true
-                    fillAllCubes('#1f1f1f')
                     cubeMatrixState.isPreview = true
+                    indicator.style.backgroundColor = 'green'
+                    indicator.style.display = 'block'
+                    setTimeout(() => indicator.style.display = 'none', 400)
                     setTimeout(()=> {
                         document.getElementById('cubeMatrix').remove()
                         cubeMatrixState.gameEndFunc()
+                        cubeMatrixState = newCubeMatrixState()
+                        gameState.level += 1
+                        gameState.difficulty = changeDifficulty()
+                        gameState.resolution = changeResolution()
                     },1000)
                 }
             } else {
                 pressedMistakes.push(cubeId)
                 cubeEl.style.backgroundColor = '#194264';
                 cubeMatrixState.mistakesCount++;
-
-                const miss = document.getElementById('miss')
-                miss.style.display = 'block'
-                setTimeout(() => miss.style.display = 'none', 200)
-
+                indicator.style.backgroundColor = 'red'
+                indicator.style.display = 'block'
+                setTimeout(() => indicator.style.display = 'none', 200)
 
                 if (cubeMatrixState.pressedMistakes.length > 2) {
                     cubeMatrixState.isDie = true;
-                    fillAllCubes('#194264');
+                    gameState.lives -= 1
                     cubeMatrixState.isPreview = true;
+                    showLives(gameState.lives)
                     setTimeout(()=> {
                         document.getElementById('cubeMatrix').remove()
                         cubeMatrixState.gameEndFunc()
+                        cubeMatrixState = newCubeMatrixState()
+                        if (gameState.lives === 0) {
+                            gameState.isDie = true
+                            document.getElementById('gameInfo').remove()
+                            createGameOver(gameState.level)
+                            //Тут отправляем статистику и выводим экран проиграл
+                        }
                     },1000)
                     
                 }
@@ -98,12 +110,13 @@ function cubeClick () {
 
         }
         console.log(cubeMatrixState)
+        console.log(gameState)
     }
 }
 
-
 function createGameInfo () {
     const gameInfo = document.createElement('div');
+    gameInfo.id = 'gameInfo'
     gameInfo.className = 'level-container';
     const levelSpan = document.createElement('span');
     const levelTextSpan = document.createElement('span');
@@ -138,10 +151,57 @@ function createGameInfo () {
     document.getElementById("header").appendChild(gameInfo);
 }
 
-function getRandomInt(max) {return Math.floor(Math.random() * max)}
+function createGameOver (level) {
+    const header = document.getElementById("header");
+    const indicatorDiv = document.createElement('div');
+    indicatorDiv.className = 'indicator';
+    indicatorDiv.id = 'indicator';
+    header.appendChild(indicatorDiv);  
+    const playScreenDiv = document.createElement('div');
+    playScreenDiv.className = 'd-flex flex-column justify-content-center align-items-center h-100';
+    playScreenDiv.id = 'play-screen';
+    header.appendChild(playScreenDiv);   
+    const eyeIcon = document.createElement('i');
+    eyeIcon.className = 'fa-regular fa-eye';
+    eyeIcon.style.fontSize = '100px';
+    playScreenDiv.appendChild(eyeIcon);   
+    const h2Element = document.createElement('h2');
+    h2Element.style.cssText = 'font-size: 30px; font-weight: 400; margin: 20px;';
+    h2Element.textContent = 'Visual Memory';
+    playScreenDiv.appendChild(h2Element);   
+    const h1Element = document.createElement('h1');
+    h1Element.style.cssText = 'font-size: 80px; font-weight: 400; margin-bottom: 20px;';
+    h1Element.textContent = `Level ${level}`
+    playScreenDiv.appendChild(h1Element);   
+    const buttonElement = document.createElement('button');
+    buttonElement.type = 'button';
+    buttonElement.id = 'replay-btn';
+    buttonElement.className = 'btn btn-warning';
+    buttonElement.style.fontSize = '14px';
+    buttonElement.textContent = 'Try Again';
+    playScreenDiv.appendChild(buttonElement);
 
+    document.getElementById('replay-btn').addEventListener('click', () => {
+        gameState = newGameState()
+        mainGame()
+        document.getElementById('indicator').remove()
+        document.getElementById('play-screen').remove()
+    })
+}
+
+function countOfCorrectCubes (difficulty) {
+    const resolution = gameState.resolution
+    switch (difficulty) {
+        case (1): return Math.round(resolution * resolution / 100 * 30)
+        case (2): return Math.round(resolution * resolution / 100 * 40)
+        case (3): return Math.round(resolution * resolution / 100 * 50)
+        case (4): return Math.round(resolution * resolution / 100 * 70)
+    }
+}
+
+function getRandomInt(max) {return Math.floor(Math.random() * max)}
 function randomCubesId (idCounts) {
-    let resolution = cubeMatrixState.resolution
+    let resolution = gameState.resolution
     const maxIdNumber = resolution * resolution;
     const result = []
     for (let i = 0; i < idCounts; i++) {
@@ -162,23 +222,82 @@ function previewCorrectCubes (correctCubeIds) {
         let cube = document.getElementById(id);
         cube.style.backgroundColor = '#1f1f1f';
         cube.classList.add('click')
-        setTimeout(() => cube.classList.remove('click'), 500);
+        setTimeout(() => cube.classList.remove('click'), 100);
     }
 }
 
 function fillAllCubes (color) {
-    let resolution = cubeMatrixState.resolution
+    let resolution = gameState.resolution
     for (let i = 0; i < resolution * resolution; i++) {
         let cube = document.getElementById(i)
         cube.style.backgroundColor = color
     }
 }
 
+function showLives (livesCount) {
+    const live1 = document.getElementById('live-1')
+    const live2 = document.getElementById('live-2')
+    const live3 = document.getElementById('live-3')
+    switch (livesCount) {
+        case (2):
+            live3.style.opacity = '30%'
+            break
+        case (1):
+            live2.style.opacity = '30%'
+            break
+        case (0):
+            live1.style.opacity = '30%'
+            break
+    }
+}
+
+function newCubeMatrixState () {
+    return {
+        pressedCorrect: [],
+        isWin: false,
+        pressedMistakes: [],
+        mistakesCount: 0,
+        isDie: false,
+        correctIds: [],
+        isPreview: true, 
+        iswin: false,
+        gameEndFunc: null,
+    }
+}
+
+function newGameState () {
+    return {
+        isDie: false,
+        lives: 3,
+        level: 1,
+        difficulty: 1,
+        resolution: 3
+    }
+}
+
+function changeDifficulty () {
+    let difficulty = gameState.difficulty
+    if (difficulty < 4) {
+        difficulty += 1
+    } else {
+        difficulty = 1
+    }
+    return difficulty
+}
+
+function changeResolution() {
+    const resolution = gameState.resolution
+    if (gameState.difficulty === 1) {
+        return resolution + 1
+    }
+    return resolution
+}
+
 function gameIteration () {
-    let resolution = cubeMatrixState.resolution
+    let resolution = gameState.resolution
     return new Promise ((stopGame) => {
         cubeMatrixState.gameEndFunc = stopGame;
-        cubeMatrixState.correctIds = randomCubesId(countOfCorrectCubes().basic)
+        cubeMatrixState.correctIds = randomCubesId(countOfCorrectCubes(gameState.difficulty))
         createCubeMatrix()
         setTimeout(() => {
             previewCorrectCubes(cubeMatrixState.correctIds)
@@ -191,31 +310,14 @@ function gameIteration () {
 
 }
 
-function cubeMatrixStateEdit (resolution) {
-    cubeMatrixState = {
-        pressedCorrect: [],
-        isWin: false,
-        pressedMistakes: [],
-        mistakesCount: 0,
-        isDie: false,
-        correctIds: [],
-        resolution: resolution,
-        isPreview: true, 
-        gameEndFunc: null   
-    }
-}
-
-
 async function mainGame () {
-    console.log('игра 1')
     createGameInfo()
-    await gameIteration(cubeMatrixState.resolution, countOfCorrectCubes().basic);
-    console.log('игра 2')
-    await gameIteration(cubeMatrixState.resolution, countOfCorrectCubes().hard);
+
+    while (gameState.isDie === false) {
+        await gameIteration();
+    }
+
 }
-
-
-
 
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('play-btn').addEventListener('click', () => {
@@ -223,12 +325,3 @@ window.addEventListener('DOMContentLoaded', () => {
     mainGame();
 })
 })
-
-/*
-3)При 3 промахах - 1 жизн и уровень перезапускается
-4)При запуске уровня проверяется не проиграли ли мы (всего 3 жизни)
-5)Сохраняется номер уровня и кол-во жизней 
-
-
-*/
-
