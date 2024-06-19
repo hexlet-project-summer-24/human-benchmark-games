@@ -1,4 +1,4 @@
-const cubeMatrixState = {
+let cubeMatrixState = {
     pressedCorrect: [],
     pressedMistakes: [],
     mistakesCount: 0,
@@ -109,6 +109,7 @@ function cubeClick () {
 
         }
         console.log(cubeMatrixState)
+        console.log(gameState)
     }
 }
 
@@ -201,6 +202,7 @@ function countOfCorrectCubes (difficulty) {
 
 function createGameInfo () {
     const gameInfo = document.createElement('div');
+    gameInfo.id = 'gameInfo'
     gameInfo.className = 'level-container';
     const levelSpan = document.createElement('span');
     const levelTextSpan = document.createElement('span');
@@ -233,6 +235,54 @@ function createGameInfo () {
     gameInfo.appendChild(livesDiv);
 
     document.getElementById("header").appendChild(gameInfo);
+}
+
+function createGameOver (level) {
+    const header = document.getElementById("header");
+    const indicatorDiv = document.createElement('div');
+    indicatorDiv.className = 'indicator';
+    indicatorDiv.id = 'indicator';
+    header.appendChild(indicatorDiv);  
+    const playScreenDiv = document.createElement('div');
+    playScreenDiv.className = 'd-flex flex-column justify-content-center align-items-center h-100';
+    playScreenDiv.id = 'play-screen';
+    header.appendChild(playScreenDiv);   
+    const eyeIcon = document.createElement('i');
+    eyeIcon.className = 'fa-regular fa-eye';
+    eyeIcon.style.fontSize = '100px';
+    playScreenDiv.appendChild(eyeIcon);   
+    const h2Element = document.createElement('h2');
+    h2Element.style.cssText = 'font-size: 30px; font-weight: 400; margin: 20px;';
+    h2Element.textContent = 'Visual Memory';
+    playScreenDiv.appendChild(h2Element);   
+    const h1Element = document.createElement('h1');
+    h1Element.style.cssText = 'font-size: 80px; font-weight: 400; margin-bottom: 20px;';
+    h1Element.textContent = `Level ${level}`
+    playScreenDiv.appendChild(h1Element);   
+    const buttonElement = document.createElement('button');
+    buttonElement.type = 'button';
+    buttonElement.id = 'replay-btn';
+    buttonElement.className = 'btn btn-warning';
+    buttonElement.style.fontSize = '14px';
+    buttonElement.textContent = 'Try Again';
+    playScreenDiv.appendChild(buttonElement);
+
+    document.getElementById('replay-btn').addEventListener('click', () => {
+        gameState = newGameState()
+        mainGame()
+        document.getElementById('indicator').remove()
+        document.getElementById('play-screen').remove()
+    })
+}
+
+function countOfCorrectCubes (difficulty) {
+    const resolution = gameState.resolution
+    switch (difficulty) {
+        case (1): return Math.round(resolution * resolution / 100 * 30)
+        case (2): return Math.round(resolution * resolution / 100 * 40)
+        case (3): return Math.round(resolution * resolution / 100 * 50)
+        case (4): return Math.round(resolution * resolution / 100 * 70)
+    }
 }
 
 function getRandomInt(max) {return Math.floor(Math.random() * max)}
