@@ -1,27 +1,22 @@
 const state = {
     squaresNums: [],
     rightAnswersCounter: 0,
-    rightSquares: [],
-    usersAnswers: [],
-    rightSquaresElements: [],
+    currentSequence: [],
+    userSequence: [],
 };
 
-function changeSquareColor(squareArray) {
-    squareArray.forEach((square, index) => {
-        setTimeout(() => {
-            square.style.backgroundColor = `rgba(0, 0, 0, 0.5)`;
-        }, (index + 1 )* 1500);
-    })
-}
 
-function changeSquareColorToWhite(squareArray) {
-    console.log(squareArray.length);
-    squareArray.forEach((square, index) => {
+function showSequence() {
+    state.currentSequence.forEach((square, index) => {
         setTimeout(() => {
             square.style.backgroundColor = 'white';
+            setTimeout(() => {
+                square.style.backgroundColor = `rgba(0, 0, 0, 0.5)`;
+            },(index + 1) * 500);
         }, (index + 1) * 1000);
     });
 };
+
 
 function getRundomSquares() {
     const randomIndex = Math.floor(Math.random() * 9);
@@ -66,24 +61,17 @@ function createSquares() {
     gameContainer.appendChild(gridContainerRigth);
 
     const randomSquare = getRundomSquares();
-    const nameOfCorrectSquare = randomSquare.classList[1];
-    state.rightSquaresElements.push(randomSquare);
-    state.rightSquares.push(nameOfCorrectSquare);
+    state.currentSequence.push(randomSquare);
 
-    changeSquareColorToWhite(state.rightSquaresElements);
-    changeSquareColor(state.rightSquaresElements);
-
+    showSequence();
     return gameContainer;
 };
 
-function continueGame() {
-    changeSquareColorToWhite(state.rightSquaresElements);
-    changeSquareColor(state.rightSquaresElements);
-
-};
-
 function isRightAnswer(correctAnswers, userAnswers) {
-    
+    console.log(`Правильный ответ:`);
+    console.log(correctAnswers);
+    console.log(`Пользовательский ответ:`);
+    console.log(userAnswers);
     for (let i = 0; i < correctAnswers.length; i++) {
         if (correctAnswers[i] !== userAnswers[i]) {
             return false;
@@ -103,31 +91,26 @@ const app = () => {
 
         const gameContainer = document.querySelector('.game-container');
 
-        gameContainer.addEventListener('click', (event) => {
-            const clickedSquare = event.target.classList[1];
-            
-            if (clickedSquare.includes('square')) {
-                state.usersAnswers.push(clickedSquare);
-        
-                if (isRightAnswer(state.usersAnswers, state.rightSquares)) {
+        gameContainer.addEventListener('click', (e) => {
+            const clickedSquareNum = e.target.classList[1];
+            state.userSequence.push(e.target);
+            console.log('Пушиться юзерский ответ');
+            if (clickedSquareNum.includes('square')) {
+                if (isRightAnswer(state.currentSequence, state.userSequence)) {
                     console.log('Правильная последовательность!');
                     const nextRandomSquare = getRundomSquares();
-                    state.rightSquaresElements.push(nextRandomSquare);
-                    console.log(state.rightSquaresElements);
-                    continueGame();
-                    
+                    state.currentSequence.push(nextRandomSquare);
+                    state.rightAnswersCounter += 1;
+                    showSequence();
                 } else {
                     console.log('Неправильная последовательность');
-                    state.usersAnswers = [];
-                    state.rightSquares = [];
+                    // отправка state.rightAnswers на бэк?
+                    state.currentSequence = [];
+                    state.userSequence = [];
                 }
             }
-        
-           
         });
-
     })
-    
 };
 
 app();
