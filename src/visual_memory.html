@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-mdb-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/visual_memory.css">
+    <title>Human Benchmark</title>
+</head>
+<body>
+    <header class="h-50 d-flex flex-column justify-content-center" id="header" style="padding-top: 30px;">
+        <div class="indicator" id="indicator"></div>
+        <div class="d-flex flex-column justify-content-center align-items-center h-100" id="play-screen">
+            <i class="fa-regular fa-eye" style="font-size: 100px;"></i>
+            <h1 style="font-size: 80px; font-weight: 400;">Visual Memory Test</h1>
+            <h2 style="font-size: 30px; font-weight: 400; margin-bottom: 30px;">Memorize the squares.</h2>
+            <button type="button" id="play-btn" class="btn btn-warning" style="font-size: 14px;" data-mdb-ripple-init>Start</button>
+        </div>
+    </header>
+    <footer class="h-50" id="footer"></footer>
+    <!-- MDB -->
+     
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.umd.min.js"></script>
+    <script type="text/javascript" src="scripts/visual_memory.js"></script>
+</body>
+</html>
+
+
+
