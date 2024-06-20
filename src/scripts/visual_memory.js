@@ -320,7 +320,7 @@ async function mainGame () {
 }
 
   
-  function sendStatistics(level) {
+function sendStatistics(level) {
     if (level !== undefined) { 
       axios.post('http://localhost:3000/statistics', { level: level })
         .then(response => {
@@ -332,7 +332,8 @@ async function mainGame () {
       console.error('Error: level is not defined');
     }
   }
-  
+
+
 
 
 
