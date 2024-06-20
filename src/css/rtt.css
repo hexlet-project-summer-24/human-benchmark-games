@@ -29,10 +29,6 @@
   }
 }
 
-body {
-  background-color: #e6e6f4;
-}
-
 .unselectable {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -71,30 +67,7 @@ body {
 }
 
 .instructions {
-  line-height: 0.5;
-}
-
-nav {
-  display: flex;
-  height: 50px;
-  background-color: #ffffff;
-}
-
-.link-block {
-  display: flex;
-  align-items: center;
-  padding: 0 10px 0 10px;
-  height: 50px;
-}
-
-.link-block:hover {
-  background-color: #f0f0ff;
-}
-
-.home-link {
-  text-decoration: none;
-  color: black;
-  font-size: 20px;
+  line-height: 0.7;
 }
 
 .blinking-icon {
@@ -110,61 +83,11 @@ nav {
   margin-bottom: 20px;
 }
 
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.text-section {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  gap: 30px;
-}
-
-.text-block {
-  height: 47em;
-  width: 30em;
-  padding: 30px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 0 5px 1px #d6d6d6;
-}
-
-.text-block > p {
-  font-size: 18px;
-}
-
-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-footer > section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  width: 61em;
-  margin: 5% 0 0;
-}
-
-.info {
-  width: 300px;
-  text-align: right;
-  font-size: 14px;
-  opacity: 75%;
-  line-height: 0.7;
-}
-
 /* Цвета для click-box */
+.bg-blue {
+  background-color: #3284c8;
+}
+
 .bg-red {
   background-color: rgb(185, 43, 43);
 }
