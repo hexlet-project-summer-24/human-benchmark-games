@@ -3,10 +3,10 @@ name: Human Benchmark
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 env:
   CI: true
@@ -20,9 +20,9 @@ jobs:
       - name: Проверка текста коммита🕵️
         uses: gsactions/commit-message-checker@v2
         with:
-          pattern: '\[[A-Za-z0-9]+\]\sMLTL-[0-9]+\s([A-Za-z]+( [A-Za-z]+)+)'
+          pattern: '\[[A-Za-zА-Яа-я0-9]+\]\s(?:HMBM-[0-9]+(?:_|$))*(?:HMBM-[0-9]+)?\s([А-Яа-яA-Za-z]+( [А-Яа-яA-Za-z]+)+)'
           flags: 'gm'
-          error: 'Текст коммита должен быть в формате [TEXT] HMBM-9999 Commit message'
+          error: 'Текст коммита должен быть в формате [TEXT] HMBM-9999 Commit message, если задач несколько указываем через _ (прим. [TEXT] HMBM-9999_HMBM-6666 Commit message '
 
   branch-naming-rules:
     name: Проверка имени ветки🕵️
@@ -31,9 +31,9 @@ jobs:
       - name: Проверка имени ветки🕵️
         uses: deepakputhraya/action-branch-name@master
         with:
-          regex: 'feature\/HMBM-[0-9]+'
+          regex: 'feature\/HMBM-[0-9]+.*'
           allowed_prefixes: 'feature,stable,fix'
-          ignore: master,develop
+          ignore: main,develop
 
   build:
     name: Собираем наш проект🛠️

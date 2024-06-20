@@ -405,6 +405,7 @@ async function mainGame () {
 
 }
 
+
   
 function sendStatistics(level) {
     if (level !== undefined) { 
@@ -504,3 +505,4 @@ window.addEventListener('DOMContentLoaded', () => {
     mainGame();
 })
 })
+
