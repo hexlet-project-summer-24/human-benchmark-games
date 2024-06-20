@@ -26,7 +26,7 @@ const startGame = () => {
 
 const abortGame = () => {
   clearTimeout(timeout);
-  updateGameBox('bg-primary', 'Too soon!', 'block', 'none', 'block');
+  updateGameBox('bg-blue', 'Too soon!', 'block', 'none', 'block');
   icon.className = `fa-solid fa-triangle-exclamation static-icon`;
   endgameText.textContent = 'Click to try again.';
   gameStarted = false;
@@ -38,7 +38,7 @@ const endGame = () => {
   bigText.textContent = `${reactionTimeInMs} ms`;
   endgameText.textContent = 'Click to keep going';
   clearTimeout(timeout);
-  updateGameBox('bg-primary', bigText.textContent, 'block', 'none', 'block');
+  updateGameBox('bg-blue', bigText.textContent, 'block', 'none', 'block');
   icon.className = `fa-solid fa-clock static-icon`;
   gameStarted = false;
 };
