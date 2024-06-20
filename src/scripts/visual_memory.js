@@ -60,7 +60,7 @@ function cubeClick () {
         cubeEl.classList.add('click')
         setTimeout(() => cubeEl.classList.remove('click'), 100);
         const indicator = document.getElementById('indicator')
-        if (!pressedCorrect.includes(cubeId) || !pressedMistakes.includes(cubeId)) {
+        if (!pressedCorrect.includes(cubeId) && !pressedMistakes.includes(cubeId)) {
             if (correctIds.includes(cubeId)) {
                 pressedCorrect.push(cubeId)
                 cubeEl.style.backgroundColor = '#1f1f1f';
@@ -100,7 +100,6 @@ function cubeClick () {
                             gameState.isDie = true
                             document.getElementById('gameInfo').remove()
                             createGameOver(gameState.level)
-                            //тут кидаем gameState.level в бд статистики
                         }
                     },1000)
                     
@@ -182,6 +181,7 @@ function createGameOver (level) {
     playScreenDiv.appendChild(buttonElement);
 
     document.getElementById('replay-btn').addEventListener('click', () => {
+        sendStatistics(gameState.level)
         gameState = newGameState()
         mainGame()
         document.getElementById('indicator').remove()
@@ -319,7 +319,99 @@ async function mainGame () {
 
 }
 
+  
+  function sendStatistics(level) {
+    if (level !== undefined) { 
+      axios.post('http://localhost:3000/statistics', { level: level })
+        .then(response => {
+          console.log(response.data);
+          updateStatisticsChart();
+        })
+        .catch(error => console.error(error));
+    } else {
+      console.error('Error: level is not defined');
+    }
+  }
+  
+
+
+
+  function getStatistics() {
+    return axios.get('http://localhost:3000/statistics')
+      .then(response => response.data)
+      .catch(error => console.error(error));
+  }
+  
+  function updateStatisticsChart() {
+    getStatistics().then(statistics => {
+      const labels = statistics.map(stat => stat.level);
+      const data = statistics.map(stat => stat.count);
+  
+      const ctx = document.getElementById('statistics-chart').getContext('2d');
+      if (window.statisticsChart) {
+        window.statisticsChart.destroy();
+      }
+      window.statisticsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: '#3284c8',
+            borderColor: '#3284c8',
+            borderWidth: 3,
+            fill: false,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            tension: 0.4 
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              display: false 
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: false,
+                text: 'Level',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: '#080808', 
+                drawBorder: false, 
+                drawTicks: false, 
+                drawOnChartArea: true 
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              display: false
+            }
+          }
+        }
+      });
+    });
+  }
+
 window.addEventListener('DOMContentLoaded', () => {
+    updateStatisticsChart();
     document.getElementById('play-btn').addEventListener('click', () => {
     document.getElementById('play-screen').remove()
     mainGame();
