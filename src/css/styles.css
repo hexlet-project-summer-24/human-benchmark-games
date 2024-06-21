@@ -124,11 +124,6 @@ header.dark-mode {
     z-index: 1050; /* Увеличиваем z-index для выпадающего меню */
 }
 
-.dropdown-menu {
-    background-color: #f8f9fa;
-    color: black;
-}
-
 .dropdown-item:hover {
     background-color: #e9ecef;
 }

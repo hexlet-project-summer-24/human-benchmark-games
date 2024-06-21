@@ -14,19 +14,19 @@
         <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
         <label for="themeToggle"></label>
     </div>
-    <div id="language-dropdown" class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            🌐 Language
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">🇬🇧 English</a></li>
-            <li><a class="dropdown-item" href="#" onclick="setLanguage('ru')">🇷🇺 Русский</a></li>
-        </ul>
-    </div>
 </header>
-<div class="container-fluid bg-header text-center">
-    <h1 id="title">Human Benchmark</h1>
-    <p id="subtitle">Measure your abilities with brain games and cognitive tests.</p>
+<div id="language-dropdown" class="navbar-expand-xl" style="z-index: 99999">
+    <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        🌐 Language
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#" onclick="setLanguage('mainPage', 'en')">🇬🇧 English</a></li>
+        <li><a class="dropdown-item" href="#" onclick="setLanguage('mainPage', 'ru')">🇷🇺 Русский</a></li>
+    </ul>
+</div>
+<div class="container-with-theme container-fluid bg-header text-center light-mode">
+    <h1 id="title" data-key="title">Human Benchmark</h1>
+    <p id="subtitle" data-key="subtitle">Measure your abilities with brain games and cognitive tests.</p>
 </div>
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card light-mode" id="sequence-memory" onclick="window.location.href='https://example.com/sequence-memory'">
+            <div class="card light-mode" id="sequence-memory" onclick="window.location.href='visual_memory.html'">
                 <img src="https://via.placeholder.com/150" class="card-img-top" alt="Sequence Memory">
                 <h5 class="card-title" data-key="sequence-memory">Sequence Memory</h5>
                 <p class="card-text" data-key="sequence-memory-desc">Remember an increasingly long pattern of button presses.</p>
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card light-mode" id="chimp-test" onclick="window.location.href='https://example.com/chimp-test'">
+            <div class="card light-mode" id="chimp-test" onclick="window.location.href='smt.html'">
                 <img src="https://via.placeholder.com/150" class="card-img-top" alt="Chimp Test">
                 <h5 class="card-title" data-key="chimp-test">Chimp Test</h5>
                 <p class="card-text" data-key="chimp-test-desc">Are you smarter than a chimpanzee?</p>
@@ -63,58 +63,11 @@
 
 
 <script>
-    const lang = {
-        en: {
-            "title": "Human Benchmark",
-            "subtitle": "Measure your abilities with brain games and cognitive tests.",
-            "reaction-time": "Reaction Time",
-            "reaction-time-desc": "Test your visual reflexes.",
-            "sequence-memory": "Sequence Memory",
-            "sequence-memory-desc": "Remember an increasingly long pattern of button presses.",
-            "aim-trainer": "Aim Trainer",
-            "aim-trainer-desc": "How quickly can you hit all the targets?",
-            "chimp-test": "Chimp Test",
-            "chimp-test-desc": "Are you smarter than a chimpanzee?"
-        },
-        ru: {
-            "title": "Человеческий Эталон",
-            "subtitle": "Измерьте свои способности с помощью игр и когнитивных тестов.",
-            "reaction-time": "Время Реакции",
-            "reaction-time-desc": "Проверьте свои визуальные рефлексы.",
-            "sequence-memory": "Память Последовательностей",
-            "sequence-memory-desc": "Запомните всё более длинную последовательность нажатий кнопок.",
-            "aim-trainer": "Тренировка Точности",
-            "aim-trainer-desc": "Как быстро вы можете поразить все цели?",
-            "chimp-test": "Тест Шимпанзе",
-            "chimp-test-desc": "Вы умнее шимпанзе?"
-        }
-    };
-
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        document.getElementById('page-header').classList.toggle('dark-mode');
-        document.querySelectorAll('.card').forEach(card => {
-            card.classList.toggle('dark-mode');
-            card.classList.toggle('light-mode');
-        });
-        document.querySelector('.bg-header').classList.toggle('dark-mode');
-    }
-
-    function setLanguage(langCode) {
-        document.querySelectorAll('[data-key]').forEach(element => {
-            const key = element.getAttribute('data-key');
-            element.textContent = lang[langCode][key];
-        });
-    }
-
-    // Set default language to English
     setLanguage('en');
-
-    // Set Russian language when necessary
-    // setLanguage('ru'); // Uncomment this line to set Russian language
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="scripts/index.js"></script>
 </body>
 </html>

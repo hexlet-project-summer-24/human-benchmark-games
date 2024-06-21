@@ -6,6 +6,10 @@ body.dark-mode {
     background-color: #1e1e1e;
     color: white;
 }
+.dropdown-menu {
+    position: relative;
+    z-index: 9999;
+}
 .card {
     margin: 10px;
     padding: 20px;
