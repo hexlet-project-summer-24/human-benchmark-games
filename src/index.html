@@ -6,7 +6,9 @@
     <title>Human Benchmark</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/> <!-- Font Awesome (Иконки) -->
     <link href="css/styles.css" rel="stylesheet"> <!-- Подключение общего CSS файла -->
+    <link rel="shortcut icon" href="./img/bolt-favicon.ico" type="image/x-icon"/>
 </head>
 <body>
 <header id="page-header">
@@ -25,6 +27,7 @@
     </ul>
 </div>
 <div class="container-with-theme container-fluid bg-header text-center light-mode">
+    <i id="main-icon" class="fa-solid fa-bolt-lightning" alt="Main Icon Lightning"></i>
     <h1 id="title" data-key="title">Human Benchmark</h1>
     <p id="subtitle" data-key="subtitle">Measure your abilities with brain games and cognitive tests.</p>
 </div>
@@ -32,30 +35,30 @@
     <div class="row justify-content-center">
         <div class="col-md-3">
             <div class="card light-mode" id="reaction-time" onclick="window.location.href='reaction_time_test.html'">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Reaction Time">
+                <i class="fa-solid fa-bolt-lightning card-img-top light-mode" style="padding: 13px;" alt="Reaction Time"></i>
                 <h5 class="card-title" data-key="reaction-time">Reaction Time</h5>
                 <p class="card-text" data-key="reaction-time-desc">Test your visual reflexes.</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card light-mode" id="sequence-memory" onclick="window.location.href='visual_memory.html'">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Sequence Memory">
-                <h5 class="card-title" data-key="sequence-memory">Sequence Memory</h5>
-                <p class="card-text" data-key="sequence-memory-desc">Remember an increasingly long pattern of button presses.</p>
+                <i class="fa-regular fa-eye card-img-top light-mode" alt="Visual Memory"></i>
+                <h5 class="card-title" data-key="sequence-memory">Visual Memory</h5>
+                <p class="card-text" data-key="sequence-memory-desc">Remember an increasingly large board of squares.</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card light-mode" id="aim-trainer" onclick="window.location.href='aim.html'">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Aim Trainer">
+                <i class="fa-solid fa-crosshairs card-img-top light-mode" alt="Aim Trainer"></i>
                 <h5 class="card-title" data-key="aim-trainer">Aim Trainer</h5>
                 <p class="card-text" data-key="aim-trainer-desc">How quickly can you hit all the targets?</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card light-mode" id="chimp-test" onclick="window.location.href='sequence_memory_test.html'">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Chimp Test">
-                <h5 class="card-title" data-key="chimp-test">Chimp Test</h5>
-                <p class="card-text" data-key="chimp-test-desc">Are you smarter than a chimpanzee?</p>
+                <i class="fa-regular fa-table-cells card-img-top light-mode" style="padding: 2px 0 2px 0;" alt="Sequence Memory"></i>
+                <h5 class="card-title" data-key="chimp-test">Sequence Memory</h5>
+                <p class="card-text" style="font-size: 17px;" data-key="chimp-test-desc">Remember an increasingly long pattern of button presses.</p>
             </div>
         </div>
     </div>
