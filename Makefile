@@ -1,7 +1,7 @@
 install:
 		npm ci
 run:
-		npx parcel src/index.html
+    npx parcel src/*.html
 build:
 		npm run build
 publish:
