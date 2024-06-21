@@ -6,6 +6,10 @@ const endgameText = document.getElementById('endgame-text');
 let startTime;
 let timeout;
 let gameStarted = false;
+let tryCount;
+let clickCount;
+let reactionTime;
+let successfulClickCount;
 
 const updateGameBox = (bgColor, text, iconDisplay, instructionsDisplay, endgameDisplay) => {
   clickBox.className = `container-fluid ${bgColor} text-light`;
@@ -14,6 +18,11 @@ const updateGameBox = (bgColor, text, iconDisplay, instructionsDisplay, endgameD
   instructions.style.display = instructionsDisplay;
   endgameText.style.display = endgameDisplay;
 };
+
+
+window.addEventListener("load", (event) => {
+    initVariables();
+});
 
 const startGame = () => {
   updateGameBox('bg-red', 'Wait for green...', 'none', 'none', 'none');
@@ -41,7 +50,15 @@ const endGame = () => {
   updateGameBox('bg-blue', bigText.textContent, 'block', 'none', 'block');
   icon.className = `fa-solid fa-clock static-icon`;
   gameStarted = false;
+  return reactionTimeInMs;
 };
+
+const initVariables = () => {
+    tryCount = 10
+    clickCount = 0;
+    reactionTime = 0;
+    successfulClickCount = tryCount;
+}
 
 clickBox.addEventListener('click', () => {
   const backgroundColor = getComputedStyle(clickBox).backgroundColor;
@@ -50,8 +67,17 @@ clickBox.addEventListener('click', () => {
     gameStarted = true;
     startGame();
   } else if (backgroundColor === 'rgb(48, 156, 48)') { // 🟩 Проверка на ЗЕЛЕНЫЙ цвет
-    endGame();
+    reactionTime += endGame();
+    clickCount++
   } else if (backgroundColor === 'rgb(185, 43, 43)') { // 🟥 Проверка на КРАСНЫЙ цвет
     abortGame();
+    clickCount++
+    successfulClickCount -= 1;
+  }
+  if (tryCount === clickCount) {
+      updateGameBox('bg-blue', `Your average reaction time is ${reactionTime / successfulClickCount} ms, 
+      your accuracy is ${successfulClickCount / tryCount * 100}%`, 'block', 'none', 'block');
+      endgameText.textContent = 'Click to restart game.';
+      initVariables();
   }
 });
