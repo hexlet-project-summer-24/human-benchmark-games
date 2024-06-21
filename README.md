@@ -14,7 +14,7 @@
 
 ## How to play:
 
-Click [here](human-benchmark-games.vercel.app) to visit our website.
+Click [here](https://human-benchmark-games.vercel.app) to visit our website.
 
 ## How to deploy the project locally:
 
