@@ -34,7 +34,7 @@ const lang = {
         }
     }
 };
-function toggleTheme() {
+const toggleTheme = () => {
     document.body.classList.toggle('dark-mode');
     document.getElementById('page-header').classList.toggle('dark-mode');
     document.querySelectorAll('.card').forEach(card => {
@@ -47,7 +47,7 @@ function toggleTheme() {
     })
 }
 
-function setLanguage(pageName, langCode) {
+const setLanguage = (pageName, langCode) => () => {
     document.querySelectorAll('[data-key]').forEach(element => {
         const key = element.getAttribute('data-key');
         element.textContent = lang[pageName][langCode][key];
