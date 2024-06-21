@@ -1,107 +1,66 @@
-// ======== Start Game =================
+const gameContainer = document.getElementById('gameContainer');
+const startButton = document.getElementById('startButton');
+const message = document.getElementById('message');
+let startTime;
+let reactionTimes = [];
+let target;
+let targetCount = 0;
+let maxTargets = 10;
+let clicksMade = 0;
 
-const startScreen = document.querySelector("#start_screen");
-const startBtn = document.querySelector(".start");
+const startGame = () => {
+  reactionTimes = [];
+  targetCount = 0;
+  message.textContent = '';
+  startButton.disabled = true;
+  clicksMade = 0;
+  createTarget();
+}
 
-startBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  startScreen.classList.add("up");
-});
-
-// ========== Set Options ================
-
-const optionScreen = document.querySelector("#option_screen");
-const timeList = document.querySelector(".time-list");
-
-let gameTime = 0;
-
-timeList.addEventListener("click", (event) => {
-  if (event.target.classList.contains("time-btn")) {
-    gameTime = parseInt(event.target.getAttribute("data-time"));
-    optionScreen.classList.add("up");
-    startGame();
+const createTarget = () => {
+  if (targetCount >= maxTargets) {
+    endGame();
+    return;
   }
-});
+  targetCount++;
+  const x = Math.random() * (gameContainer.clientWidth - 50);
+  const y = Math.random() * (gameContainer.clientHeight - 50);
 
-// =========== Play Game ===============
-const timeBlock = document.getElementById("time");
-const board = document.getElementById("board");
+  target = document.createElement('div');
+  target.classList.add('target');
+  target.style.left = `${x}px`;
+  target.style.top = `${y}px`;
+  target.addEventListener('click', hitTarget);
+  gameContainer.appendChild(target);
 
-const colors = [
-  "#be330d",
-  "#d3da13",
-  "#be330d",
-  "#25be0d",
-  "#0dafbe",
-  "#0d3cbe",
-  "#a60dbe",
-  "#be0d0d",
-];
+  startTime = new Date().getTime();
+}
 
-let result = 0;
+const hitTarget = () => {
+  const endTime = new Date().getTime();
+  const reactionTime = endTime - startTime;
+  reactionTimes.push(reactionTime);
+  gameContainer.removeChild(target);
+  clicksMade++;
+  createTarget();
+}
 
-board.addEventListener("click", (event) => {
-  if (event.target.classList.contains("circle")) {
-    result++;
-    // board.innerHTML = "";
-    event.target.remove();
-    createRandomCircle();
+const endGame = () => {
+  startButton.disabled = false;
+  const averageTime = reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length;
+  const accuracy = maxTargets / clicksMade * 100;
+  message.textContent = `Game Over! Average Reaction Time: 
+  ${averageTime.toFixed(2)} ms, accuracy is ${(accuracy).toFixed(0)
+      .replace(/.$/,'') * 10}%`;
+}
+
+const missClickOnTarget = (event) => {
+  if (!startButton.disabled || event.srcElement.className === 'target') {
+    return;
   }
-});
-
-function startGame() {
-  gameTimer = setInterval(decreaseTime, 1000);
-  setTimer(gameTime);
-  createRandomCircle();
+  clicksMade++;
 }
 
-function decreaseTime(curTime) {
-  if (gameTime === 0) {
-    finishGame();
-  } else {
-    curTime = --gameTime;
-    setTimer(curTime);
-  }
-}
+startButton.addEventListener('click', startGame);
+gameContainer.addEventListener('click', missClickOnTarget)
 
-function finishGame() {
-  timeBlock.parentNode.remove();
-  board.innerHTML = `<h1>Your Result: <span class="primary">${result}</span></h1>`;
-  clearInterval(gameTimer);
-}
-
-function setTimer(t) {
-  if (t < 10) {
-    t = `0${t}`;
-  }
-  timeBlock.innerHTML = `00:${t}`;
-}
-
-function createRandomCircle() {
-  const circle = document.createElement("div");
-  circle.classList.add("circle");
-
-  const d = getRandomNum(10, 60);
-
-  const { width, height } = board.getBoundingClientRect();
-  //   const boardHeght = board.getBoundingClientRect().height;
-
-  const x = getRandomNum(d, width - d);
-  const y = getRandomNum(d, height - d);
-
-  const bgColor = colors[getRandomNum(0, colors.length - 1)];
-
-  circle.style.width = `${d}px`;
-  circle.style.height = `${d}px`;
-
-  circle.style.top = `${y}px`;
-  circle.style.left = `${x}px`;
-
-  circle.style.background = bgColor;
-
-  board.append(circle);
-}
-
-function getRandomNum(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
