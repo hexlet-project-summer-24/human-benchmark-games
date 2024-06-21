@@ -1,0 +1,182 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.card {
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease, border 0.3s ease;
+    animation: fadeIn 0.5s forwards;
+    border-radius: 15px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card:hover.light-mode {
+    border: 2px solid orange;
+}
+
+.card:hover.dark-mode {
+    border: 2px solid #00aaff;
+}
+
+.card.light-mode {
+    background-color: #ffffff;
+}
+
+.card.dark-mode {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+header {
+    background-color: #3284c8;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInHeader 0.5s forwards;
+}
+
+header.dark-mode {
+    background-color: #343a40;
+}
+
+#theme-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#theme-switch label {
+    margin-left: 10px;
+    font-size: 1.2em;
+}
+
+#themeToggle {
+    appearance: none;
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 30px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: 2px solid #000;
+}
+
+#themeToggle::before {
+    content: '🌞';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    transition: all 0.3s;
+}
+
+#themeToggle::after {
+    content: '🌜';
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+#themeToggle:checked {
+    background-color: #343a40;
+}
+
+#themeToggle:checked::before {
+    opacity: 0;
+}
+
+#themeToggle:checked::after {
+    opacity: 1;
+}
+
+#themeToggle:checked + label::before {
+    left: 35px;
+}
+
+#language-dropdown {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1050; /* Увеличиваем z-index для выпадающего меню */
+}
+
+.dropdown-menu {
+    background-color: #f8f9fa;
+    color: black;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInHeader {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container .row .col-md-3:nth-child(1) .card {
+    animation-delay: 0.2s;
+}
+
+.container .row .col-md-3:nth-child(2) .card {
+    animation-delay: 0.4s;
+}
+
+.container .row .col-md-3:nth-child(3) .card {
+    animation-delay: 0.6s;
+}
+
+.container .row .col-md-3:nth-child(4) .card {
+    animation-delay: 0.8s;
+}
+
+.container-fluid.bg-header {
+    background-color: #3284c8;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInHeader 0.5s forwards;
+    height: 50vh; /* Высота блока составляет половину видимой области */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container-fluid.bg-header.dark-mode {
+    background-color: #343a40;
+}

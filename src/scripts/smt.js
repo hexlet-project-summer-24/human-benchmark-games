@@ -1,116 +1,105 @@
-const state = {
-    squaresNums: [],
-    rightAnswersCounter: 0,
-    currentSequence: [],
-    userSequence: [],
-};
+const gridItems = document.querySelectorAll('.grid-item');
+let sequence = [];
+let playerSequence = [];
+let level = 0;
+let isGameStarted = false;
+let isSequenceShowing = false;
 
-
-function showSequence() {
-    state.currentSequence.forEach((square, index) => {
-        setTimeout(() => {
-            square.style.backgroundColor = 'white';
-            setTimeout(() => {
-                square.style.backgroundColor = `rgba(0, 0, 0, 0.5)`;
-            },(index + 1) * 500);
-        }, (index + 1) * 1000);
-    });
-};
-
-
-function getRundomSquares() {
-    const randomIndex = Math.floor(Math.random() * 9);
-    const randomSquare = state.squaresNums[randomIndex];
-    return randomSquare;
+const startGame = () => {
+    sequence = [];
+    playerSequence = [];
+    level = 0;
+    document.getElementById('message').textContent = '';
+    nextLevel();
+    isGameStarted = true;
 }
 
-function createSquares() {
+const nextLevel = () => {
+    level++;
+    playerSequence = [];
+    let nextIndex;
+    do {
+        nextIndex = Math.floor(Math.random() * 9);
+    } while (sequence.length > 0 && nextIndex === sequence[sequence.length - 1]);
+    sequence.push(nextIndex);
+    disableGridItems();
+    playSequence();
+}
 
-    const main = document.querySelector('.top-container');
-    main.style.display = 'none';
+const playSequence = () => {
+    let delay = 500;
+    sequence.forEach((index, i) => {
+        setTimeout(() => {
+            flash(gridItems[index]);
+            if (i === sequence.length - 1) {
+                setTimeout(() => {
+                    enableGridItems();
+                }, 500);
+            }
+        }, delay * (i + 1));
+    });
+}
 
-    const gameContainer = document.createElement('div');
-    gameContainer.classList.add('grid-container');
-    //gameContainer.style.backgroundColor = 'lightblue';
-    gameContainer.style.padding = '20px';
+const flash = (element) => {
+    element.classList.add('active');
+    setTimeout(() => {
+        element.classList.remove('active');
+    }, 500);
+}
 
+async function handleGridClick(event) {
+    console.log(isSequenceShowing)
+    if (!isGameStarted || isSequenceShowing) {
+        return;
+    }
+    const index = parseInt(event.target.id);
+    playerSequence.push(index);
+    flash(event.target);
 
-    const gridContainer = document.createElement('div');
-        gridContainer.className = 'grid-container';
-        gridContainer.classList.add('game-container');
+    if (!checkSequence()) {
+        document.getElementById('message').textContent = `Game Over! You reached level ${level}.`;
+        document.getElementById('startButton').disabled = false;
+        disableGridItems();
+        isGameStarted = false;
+        return;
+    }
 
-        for (let i = 1; i <= 9; i++) {
-            const gridItem = document.createElement('div');
-            gridItem.className = `grid-item`;
-            gridItem.classList.add(`square-${i}`);
-            gridItem.style.width = '100px';
-            gridItem.style.height = '100px';
-            gridItem.textContent = i;
-            state.squaresNums.push(gridItem);
-            gridContainer.appendChild(gridItem);
-        }
+    if (playerSequence.length === sequence.length) {
+        isSequenceShowing = true;
+        setTimeout(() => {
+            nextLevel();
+        }, 1000);
+        await wait(level + 1)
+        isSequenceShowing = false;
+    }
+}
 
-    const gridContainerLeft = document.createElement('div');
-    gridContainerLeft.className = 'col-1';
-
-    const gridContainerRigth = document.createElement('div');
-    gridContainerRigth.className = 'col-1';
-
-    gameContainer.appendChild(gridContainerLeft);
-    gameContainer.appendChild(gridContainer);
-    gameContainer.appendChild(gridContainerRigth);
-
-    const randomSquare = getRundomSquares();
-    state.currentSequence.push(randomSquare);
-
-    showSequence();
-    return gameContainer;
-};
-
-function isRightAnswer(correctAnswers, userAnswers) {
-    console.log(`Правильный ответ:`);
-    console.log(correctAnswers);
-    console.log(`Пользовательский ответ:`);
-    console.log(userAnswers);
-    for (let i = 0; i < correctAnswers.length; i++) {
-        if (correctAnswers[i] !== userAnswers[i]) {
+ checkSequence = () => {
+    for (let i = 0; i < playerSequence.length; i++) {
+        if (playerSequence[i] !== sequence[i]) {
             return false;
         }
     }
-    
     return true;
 }
 
-const app = () => {
-    const btn = document.querySelector(".btn");
+ const disableGridItems = () => {
+    gridItems.forEach(item => item.classList.add('disabled'));
+}
 
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const topBlock = document.querySelector('.top-block');
-        topBlock.appendChild(createSquares());
+const enableGridItems = () => {
+    gridItems.forEach(item => item.classList.remove('disabled'));
+}
 
-        const gameContainer = document.querySelector('.game-container');
+document.getElementById('startButton').addEventListener('click', () => {
+    startGame();
+    document.getElementById('startButton').disabled = true;
+    enableGridItems();
+});
+gridItems.forEach(item => item.addEventListener('click', handleGridClick));
 
-        gameContainer.addEventListener('click', (e) => {
-            const clickedSquareNum = e.target.classList[1];
-            state.userSequence.push(e.target);
-            console.log('Пушиться юзерский ответ');
-            if (clickedSquareNum.includes('square')) {
-                if (isRightAnswer(state.currentSequence, state.userSequence)) {
-                    console.log('Правильная последовательность!');
-                    const nextRandomSquare = getRundomSquares();
-                    state.currentSequence.push(nextRandomSquare);
-                    state.rightAnswersCounter += 1;
-                    showSequence();
-                } else {
-                    console.log('Неправильная последовательность');
-                    // отправка state.rightAnswers на бэк?
-                    state.currentSequence = [];
-                    state.userSequence = [];
-                }
-            }
-        });
-    })
-};
-
-app();
+const wait = (seconds) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, seconds * 1000);
+    });
+}
