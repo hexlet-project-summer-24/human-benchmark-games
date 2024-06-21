@@ -19,7 +19,7 @@ const updateGameBox = (
   endgameDisplay
 ) => {
   clickBox.className = `container-fluid ${bgColor} text-light`;
-  bigText.textContent = text;
+  bigText.innerHTML = text;
   icon.style.display = iconDisplay;
   instructions.style.display = instructionsDisplay;
   endgameText.style.display = endgameDisplay;
@@ -86,7 +86,7 @@ clickBox.addEventListener('click', () => {
       'bg-blue',
       `Your average reaction time is ${(
         reactionTime / successfulClickCount
-      ).toFixed()} ms, 
+      ).toFixed()} ms,</br> 
       your accuracy is ${((successfulClickCount / tryCount) * 100).toFixed()}%`,
       'none',
       'none',
