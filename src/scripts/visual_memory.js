@@ -100,6 +100,7 @@ function cubeClick () {
                             gameState.isDie = true
                             document.getElementById('gameInfo').remove()
                             createGameOver(gameState.level)
+                            sendStatistics(gameState.level)
                         }
                     },1000)
 
@@ -318,11 +319,10 @@ async function mainGame () {
 
 }
 
-
-
+updateStatisticsChart();
 function sendStatistics(level) {
     if (level !== undefined) {
-      axios.post('http://localhost:3000/statistics', { level: level })
+      axios.post('http://83.166.237.173:3000/visual-memory', { level: level })
         .then(response => {
           console.log(response.data);
           updateStatisticsChart();
@@ -332,13 +332,9 @@ function sendStatistics(level) {
       console.error('Error: level is not defined');
     }
   }
-
-
-
-
-
+  
   function getStatistics() {
-    return axios.get('http://localhost:3000/statistics')
+    return axios.get('http://83.166.237.173:3000/visual-memory')
       .then(response => response.data)
       .catch(error => console.error(error));
   }
@@ -412,7 +408,6 @@ function sendStatistics(level) {
   }
 
 window.addEventListener('DOMContentLoaded', () => {
-    updateStatisticsChart();
     document.getElementById('play-btn').addEventListener('click', () => {
     document.getElementById('play-screen').remove()
     mainGame();

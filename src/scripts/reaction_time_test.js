@@ -82,6 +82,9 @@ clickBox.addEventListener('click', () => {
     successfulClickCount -= 1;
   }
   if (tryCount === clickCount && successfulClickCount > 0) {
+    const msForDb = Math.round(reactionTime / successfulClickCount / 10) * 10
+    console.log(msForDb)
+    sendStatistics(msForDb)
     updateGameBox(
       'bg-blue',
       `Your average reaction time is ${(
@@ -107,3 +110,99 @@ clickBox.addEventListener('click', () => {
     initVariables();
   }
 });
+
+
+
+function sendStatistics(time) {
+  if (time !== undefined) {
+    axios.post('http://83.166.237.173:3000/reaction-time', { level: time })
+      .then(response => {
+        console.log(response.data);
+        updateStatisticsChart();
+      })
+      .catch(error => console.error(error));
+  } else {
+    console.error('Error: time is not defined');
+  }
+}
+
+function getStatistics() {
+  return axios.get('http://83.166.237.173:3000/reaction-time')
+    .then(response => response.data)
+    .catch(error => console.error(error));
+}
+
+
+
+function updateStatisticsChart() {
+  console.log(getStatistics())
+  getStatistics().then(statistics => {
+    const labels = statistics.map(stat => stat.level);
+    const data = statistics.map(stat => stat.count);
+
+    const ctx = document.getElementById('statistics-chart').getContext('2d');
+    if (window.statisticsChart) {
+      window.statisticsChart.destroy();
+    }
+    window.statisticsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor: '#3284c8',
+          borderColor: '#3284c8',
+          borderWidth: 3,
+          fill: false,
+          pointRadius: 0,
+          pointHitRadius: 0,
+          tension: 0.4
+        }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: false
+          },
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: false,
+              text: 'Level',
+              color: 'white'
+            },
+            ticks: {
+              color: 'white'
+            },
+            grid: {
+              color: '#080808',
+              drawBorder: false,
+              drawTicks: false,
+              drawOnChartArea: true
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Count',
+              color: 'white'
+            },
+            ticks: {
+              color: 'white'
+            },
+            display: false
+          }
+        }
+      }
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  updateStatisticsChart()
+})
