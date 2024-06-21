@@ -11,7 +11,7 @@
   "scripts": {
     "test": "npx jest --passWithNoTests",
     "start": "parcel",
-    "build": "parcel build ./*.html --dist-dir public",
+    "build": "parcel build src/*.html --dist-dir public",
     "lint": "eslint"
   },
   "type": "module",

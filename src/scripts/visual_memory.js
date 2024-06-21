@@ -4,9 +4,9 @@ let cubeMatrixState = {
     mistakesCount: 0,
     correctIds: [],
     resolution: 3,
-    isPreview: true, 
+    isPreview: true,
     iswin: false,
-    gameEndFunc: null,   
+    gameEndFunc: null,
 }
 
 let gameState = {
@@ -102,7 +102,7 @@ function cubeClick () {
                             createGameOver(gameState.level)
                         }
                     },1000)
-                    
+
                 }
             }
 
@@ -155,110 +155,23 @@ function createGameOver (level) {
     const indicatorDiv = document.createElement('div');
     indicatorDiv.className = 'indicator';
     indicatorDiv.id = 'indicator';
-    header.appendChild(indicatorDiv);  
+    header.appendChild(indicatorDiv);
     const playScreenDiv = document.createElement('div');
     playScreenDiv.className = 'd-flex flex-column justify-content-center align-items-center h-100';
     playScreenDiv.id = 'play-screen';
-    header.appendChild(playScreenDiv);   
+    header.appendChild(playScreenDiv);
     const eyeIcon = document.createElement('i');
     eyeIcon.className = 'fa-regular fa-eye';
     eyeIcon.style.fontSize = '100px';
-    playScreenDiv.appendChild(eyeIcon);   
+    playScreenDiv.appendChild(eyeIcon);
     const h2Element = document.createElement('h2');
     h2Element.style.cssText = 'font-size: 30px; font-weight: 400; margin: 20px;';
     h2Element.textContent = 'Visual Memory';
-    playScreenDiv.appendChild(h2Element);   
+    playScreenDiv.appendChild(h2Element);
     const h1Element = document.createElement('h1');
     h1Element.style.cssText = 'font-size: 80px; font-weight: 400; margin-bottom: 20px;';
     h1Element.textContent = `Level ${level}`
-    playScreenDiv.appendChild(h1Element);   
-    const buttonElement = document.createElement('button');
-    buttonElement.type = 'button';
-    buttonElement.id = 'replay-btn';
-    buttonElement.className = 'btn btn-warning';
-    buttonElement.style.fontSize = '14px';
-    buttonElement.textContent = 'Try Again';
-    playScreenDiv.appendChild(buttonElement);
-
-    document.getElementById('replay-btn').addEventListener('click', () => {
-        sendStatistics(gameState.level)
-        gameState = newGameState()
-        mainGame()
-        document.getElementById('indicator').remove()
-        document.getElementById('play-screen').remove()
-    })
-}
-
-function countOfCorrectCubes (difficulty) {
-    const resolution = gameState.resolution
-    switch (difficulty) {
-        case (1): return Math.round(resolution * resolution / 100 * 30)
-        case (2): return Math.round(resolution * resolution / 100 * 40)
-        case (3): return Math.round(resolution * resolution / 100 * 50)
-        case (4): return Math.round(resolution * resolution / 100 * 70)
-    }
-}
-
-
-function createGameInfo () {
-    const gameInfo = document.createElement('div');
-    gameInfo.id = 'gameInfo'
-    gameInfo.className = 'level-container';
-    const levelSpan = document.createElement('span');
-    const levelTextSpan = document.createElement('span');
-    levelTextSpan.textContent = 'Level';
-    levelTextSpan.className = 'level-text';
-    const levelValueSpan = document.createElement('span');
-    levelValueSpan.textContent = '1';
-    levelValueSpan.id = 'level-score';
-    levelSpan.appendChild(levelTextSpan);
-    levelSpan.appendChild(levelValueSpan);
-    const livesDiv = document.createElement('div');
-    const livesTextSpan = document.createElement('span');
-    livesTextSpan.textContent = 'Lives';
-    livesTextSpan.className = 'lives-text';
-    const live1 = document.createElement('i');
-    live1.className = 'fa-solid fa-heart';
-    live1.id = 'live-1';
-    const live2 = document.createElement('i');
-    live2.className = 'fa-solid fa-heart';
-    live2.id = 'live-2';
-    const live3 = document.createElement('i');
-    live3.className = 'fa-solid fa-heart';
-    live3.id = 'live-3';
-    livesDiv.appendChild(livesTextSpan);
-    livesDiv.appendChild(live1);
-    livesDiv.appendChild(live2);
-    livesDiv.appendChild(live3);
-
-    gameInfo.appendChild(levelSpan);
-    gameInfo.appendChild(livesDiv);
-
-    document.getElementById("header").appendChild(gameInfo);
-}
-
-function createGameOver (level) {
-    const header = document.getElementById("header");
-    const indicatorDiv = document.createElement('div');
-    indicatorDiv.className = 'indicator';
-    indicatorDiv.id = 'indicator';
-    header.appendChild(indicatorDiv);  
-    const playScreenDiv = document.createElement('div');
-    playScreenDiv.className = 'd-flex flex-column justify-content-center align-items-center h-100';
-    playScreenDiv.id = 'play-screen';
-    header.appendChild(playScreenDiv);   
-    const eyeIcon = document.createElement('i');
-    eyeIcon.className = 'fa-regular fa-eye';
-    eyeIcon.style.fontSize = '100px';
-    playScreenDiv.appendChild(eyeIcon);   
-    const h2Element = document.createElement('h2');
-    h2Element.style.cssText = 'font-size: 30px; font-weight: 400; margin: 20px;';
-    h2Element.textContent = 'Visual Memory';
-    playScreenDiv.appendChild(h2Element);   
-    const h1Element = document.createElement('h1');
-    h1Element.style.cssText = 'font-size: 80px; font-weight: 400; margin-bottom: 20px;';
-    h1Element.textContent = `Level ${level}`
-    playScreenDiv.appendChild(h1Element);   
+    playScreenDiv.appendChild(h1Element);
     const buttonElement = document.createElement('button');
     buttonElement.type = 'button';
     buttonElement.id = 'replay-btn';
@@ -345,7 +258,7 @@ function newCubeMatrixState () {
         mistakesCount: 0,
         isDie: false,
         correctIds: [],
-        isPreview: true, 
+        isPreview: true,
         iswin: false,
         gameEndFunc: null,
     }
@@ -391,7 +304,7 @@ function gameIteration () {
         setTimeout(() => {
             fillAllCubes('#2e73b6');
             cubeMatrixState.isPreview = false;
-        } , 2000)  
+        } , 2000)
     })
 
 }
@@ -406,9 +319,9 @@ async function mainGame () {
 }
 
 
-  
+
 function sendStatistics(level) {
-    if (level !== undefined) { 
+    if (level !== undefined) {
       axios.post('http://localhost:3000/statistics', { level: level })
         .then(response => {
           console.log(response.data);
@@ -429,12 +342,12 @@ function sendStatistics(level) {
       .then(response => response.data)
       .catch(error => console.error(error));
   }
-  
+
   function updateStatisticsChart() {
     getStatistics().then(statistics => {
       const labels = statistics.map(stat => stat.level);
       const data = statistics.map(stat => stat.count);
-  
+
       const ctx = document.getElementById('statistics-chart').getContext('2d');
       if (window.statisticsChart) {
         window.statisticsChart.destroy();
@@ -451,7 +364,7 @@ function sendStatistics(level) {
             fill: false,
             pointRadius: 0,
             pointHitRadius: 0,
-            tension: 0.4 
+            tension: 0.4
           }]
         },
         options: {
@@ -460,7 +373,7 @@ function sendStatistics(level) {
               display: false
             },
             legend: {
-              display: false 
+              display: false
             }
           },
           scales: {
@@ -474,10 +387,10 @@ function sendStatistics(level) {
                 color: 'white'
               },
               grid: {
-                color: '#080808', 
-                drawBorder: false, 
-                drawTicks: false, 
-                drawOnChartArea: true 
+                color: '#080808',
+                drawBorder: false,
+                drawTicks: false,
+                drawOnChartArea: true
               }
             },
             y: {
