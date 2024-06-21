@@ -57,6 +57,7 @@ async function handleGridClick(event) {
     flash(event.target);
 
     if (!checkSequence()) {
+        sendStatistics(level)
         document.getElementById('message').textContent = `Game Over! You reached level ${level}.`;
         document.getElementById('startButton').disabled = false;
         disableGridItems();
@@ -103,3 +104,95 @@ const wait = (seconds) => {
         setTimeout(resolve, seconds * 1000);
     });
 }
+
+function sendStatistics(level) {
+    if (level !== undefined) {
+      axios.post('http://83.166.237.173:3000/sequence-memory', { level: level })
+        .then(response => {
+          console.log(response.data);
+          updateStatisticsChart();
+        })
+        .catch(error => console.error(error));
+    } else {
+      console.error('Error: level is not defined');
+    }
+  }
+  
+  function getStatistics() {
+    return axios.get('http://83.166.237.173:3000/sequence-memory')
+      .then(response => response.data)
+      .catch(error => console.error(error));
+  }
+
+
+function updateStatisticsChart() {
+    getStatistics().then(statistics => {
+      const labels = statistics.map(stat => stat.level);
+      const data = statistics.map(stat => stat.count);
+
+      const ctx = document.getElementById('statistics-chart').getContext('2d');
+      if (window.statisticsChart) {
+        window.statisticsChart.destroy();
+      }
+      window.statisticsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: '#3284c8',
+            borderColor: '#3284c8',
+            borderWidth: 3,
+            fill: false,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            tension: 0.4
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: false,
+                text: 'Level',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: '#080808',
+                drawBorder: false,
+                drawTicks: false,
+                drawOnChartArea: true
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              display: false
+            }
+          }
+        }
+      });
+    });
+  }
+
+window.addEventListener('DOMContentLoaded', () => {
+    updateStatisticsChart()
+})
