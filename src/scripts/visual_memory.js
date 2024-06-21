@@ -322,7 +322,7 @@ async function mainGame () {
 updateStatisticsChart();
 function sendStatistics(level) {
     if (level !== undefined) {
-      axios.post('http://83.166.237.173:433/visual-memory',  {mode: 'no-cors', level: level })
+      axios.post('http://83.166.237.173:3000/visual-memory',  {mode: 'no-cors', level: level })
         .then(response => {
           console.log(response.data);
           updateStatisticsChart();
