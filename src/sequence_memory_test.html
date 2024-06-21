@@ -1,36 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sequence Memory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet"> <!-- Подключение общего CSS файла -->
-    <link href="css/sequence_memory_test.css" rel="stylesheet">
-</head>
-<body>
-<header id="page-header">
-    <!-- Общий header -->
-    <div id="theme-switch">
-        <input type="checkbox" id="themeToggle" onclick="toggleTheme()">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Подключение общего CSS файла -->
+    <link href="css/sequence_memory_test.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <header id="page-header">
+      <!-- Общий header -->
+      <div id="theme-switch">
+        <input type="checkbox" id="themeToggle" onclick="toggleTheme()" />
         <label for="themeToggle"></label>
-    </div>
-    <div id="language-dropdown" class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-expanded="false">
-            🌐 Language
+      </div>
+      <div id="language-dropdown" class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          🌐 Language
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">🇬🇧 English</a></li>
-            <li><a class="dropdown-item" href="#" onclick="setLanguage('ru')">🇷🇺 Русский</a></li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="setLanguage('en')"
+              >🇬🇧 English</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#" onclick="setLanguage('ru')"
+              >🇷🇺 Русский</a
+            >
+          </li>
         </ul>
-    </div>
-</header>
-<div class="container-fluid bg-header text-center text-center" style="height: 63vh">
-    <h2>Sequence Memory Game</h2>
-    <p id="message" class="mt-3"></p>
-    <div id="grid" class="grid-container">
+      </div>
+    </header>
+    <div
+      class="container-fluid bg-header text-center text-center"
+      style="height: 63vh"
+    >
+      <h2>Sequence Memory Game</h2>
+      <p id="message" class="mt-3"></p>
+      <div id="grid" class="grid-container">
         <div class="grid-item disabled" id="0"></div>
         <div class="grid-item disabled" id="1"></div>
         <div class="grid-item disabled" id="2"></div>
@@ -40,13 +66,42 @@
         <div class="grid-item disabled" id="6"></div>
         <div class="grid-item disabled" id="7"></div>
         <div class="grid-item disabled" id="8"></div>
+      </div>
+      <button id="startButton" class="btn btn-primary mt-5">Start Game</button>
     </div>
-    <button id="startButton" class="btn btn-primary mt-5">Start Game</button>
-</div>
 
-<script src="scripts/sequence_memory_test.js"></script> <!-- Подключение общего скрипта -->
-<script src="scripts/common.js"></script> <!-- Подключение скрипта игры -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</body>
+    <footer
+      id="footer"
+      class="h-25 d-flex justify-content-center align-items-center"
+    >
+      <div
+        class="statistic d-flex flex-column justify-content-center align-items-center"
+        style="
+          height: 80%;
+          width: 30%;
+          margin-top: 5px;
+          background-color: #1f1f1f;
+          border-radius: 10px;
+        "
+      >
+        <h3 style="margin: 20px; color: #bfbfbf">Statistic</h3>
+        <canvas
+          id="statistics-chart"
+          style="
+            max-height: 70%;
+            max-width: 90%;
+            margin: 5px;
+            padding-bottom: 10px;
+          "
+        ></canvas>
+      </div>
+    </footer>
+
+    <script src="scripts/sequence_memory_test.js"></script>
+    <!-- Подключение общего скрипта -->
+    <script src="scripts/common.js"></script>
+    <!-- Подключение скрипта игры -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  </body>
 </html>

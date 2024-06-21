@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" data-mdb-theme="dark">
-
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,31 +27,64 @@
     />
     <link rel="stylesheet" href="css/reaction_time_test.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
-    <!-- Click area -->
-    <section class="unselectable">
-      <div id="click-box" class="container-fluid bg-blue text-light">
-        <i
-          id="main-icon"
-          class="fa-solid fa-bolt-lightning blinking-icon fade-in-up"
-          style="color: #ffffff"
-        ></i>
-        <div class="fade-in-up">
-          <h1 id="main-header">Reaction Time Test</h1>
-          <div class="text-center fs-4 instructions">
-            <p>When the red box turns green, click as quickly as you can.</p>
-            <p>Click anywhere to start.</p>
-          </div>
+  <!-- Click area -->
+  <section class="unselectable">
+    <div id="click-box" class="container-fluid bg-blue text-light">
+      <i
+        id="main-icon"
+        class="fa-solid fa-bolt-lightning blinking-icon fade-in-up"
+        style="color: #ffffff"
+      ></i>
+      <div class="fade-in-up">
+        <h1 id="main-header">Reaction Time Test</h1>
+        <div class="text-center fs-4 instructions">
+          <p>When the red box turns green, click as quickly as you can.</p>
+          <p>
+            You have three attempts, then your average reaction time and
+            accuracy will be calculated.
+          </p>
+          <p>Click anywhere to start.</p>
         </div>
-        <p id="endgame-text" class="fs-3"></p>
       </div>
-    </section>
+      <p id="endgame-text" class="fs-3"></p>
+    </div>
+  </section>
 
-    <!-- MDB -->
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.umd.min.js"
-    ></script>
-    <script src="scripts/reaction_time_test.js"></script>
+  <footer
+    id="footer"
+    class="h-25 d-flex justify-content-center align-items-center"
+  >
+    <div
+      class="statistic d-flex flex-column justify-content-center align-items-center"
+      style="
+        height: 80%;
+        width: 30%;
+        margin-top: 5px;
+        background-color: #1f1f1f;
+        border-radius: 10px;
+      "
+    >
+      <h3 style="margin: 20px; color: #bfbfbf">Statistic</h3>
+      <canvas
+        id="statistics-chart"
+        style="
+          max-height: 70%;
+          max-width: 90%;
+          margin: 5px;
+          padding-bottom: 10px;
+        "
+      ></canvas>
+    </div>
+  </footer>
+
+  <!-- MDB -->
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.umd.min.js"
+  ></script>
+  <script src="scripts/reaction_time_test.js"></script>
 </html>

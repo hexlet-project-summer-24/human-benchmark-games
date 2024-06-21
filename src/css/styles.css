@@ -1,5 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #e6e8f4;
 }
 
 body.dark-mode {
@@ -7,9 +8,22 @@ body.dark-mode {
     color: white;
 }
 
+#title {
+    font-size: 80px;
+}
+
+#subtitle {
+    font-size: 24px;
+}
+
+#main-icon {
+    font-size: 120px;
+    margin-bottom: 30px;
+}
+
 .card {
     margin: 10px;
-    padding: 20px;
+    padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     opacity: 0;
@@ -38,6 +52,29 @@ body.dark-mode {
 .card.dark-mode {
     background-color: #1e1e1e;
     color: white;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.card-text {
+    font-size: 18px;
+}
+
+.card-img-top {
+    font-size: 80px;
+    margin-bottom: 15px;
+    opacity: 60%;
+}
+
+.card-img-top.light-mode {
+    color: #3284c8;
+}
+
+.card:hover.light-mode .card-img-top{
+    color: orange;
 }
 
 header {

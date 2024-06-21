@@ -11,7 +11,13 @@ let clickCount;
 let reactionTime;
 let successfulClickCount;
 
-const updateGameBox = (bgColor, text, iconDisplay, instructionsDisplay, endgameDisplay) => {
+const updateGameBox = (
+  bgColor,
+  text,
+  iconDisplay,
+  instructionsDisplay,
+  endgameDisplay
+) => {
   clickBox.className = `container-fluid ${bgColor} text-light`;
   bigText.textContent = text;
   icon.style.display = iconDisplay;
@@ -19,9 +25,8 @@ const updateGameBox = (bgColor, text, iconDisplay, instructionsDisplay, endgameD
   endgameText.style.display = endgameDisplay;
 };
 
-
-window.addEventListener("load", (event) => {
-    initVariables();
+window.addEventListener('load', (event) => {
+  initVariables();
 });
 
 const startGame = () => {
@@ -54,11 +59,11 @@ const endGame = () => {
 };
 
 const initVariables = () => {
-    tryCount = 10
-    clickCount = 0;
-    reactionTime = 0;
-    successfulClickCount = tryCount;
-}
+  tryCount = 3;
+  clickCount = 0;
+  reactionTime = 0;
+  successfulClickCount = tryCount;
+};
 
 clickBox.addEventListener('click', () => {
   const backgroundColor = getComputedStyle(clickBox).backgroundColor;
@@ -66,18 +71,39 @@ clickBox.addEventListener('click', () => {
   if (!gameStarted) {
     gameStarted = true;
     startGame();
-  } else if (backgroundColor === 'rgb(48, 156, 48)') { // 🟩 Проверка на ЗЕЛЕНЫЙ цвет
+  } else if (backgroundColor === 'rgb(48, 156, 48)') {
+    // 🟩 Проверка на ЗЕЛЕНЫЙ цвет
     reactionTime += endGame();
-    clickCount++
-  } else if (backgroundColor === 'rgb(185, 43, 43)') { // 🟥 Проверка на КРАСНЫЙ цвет
+    clickCount++;
+  } else if (backgroundColor === 'rgb(185, 43, 43)') {
+    // 🟥 Проверка на КРАСНЫЙ цвет
     abortGame();
-    clickCount++
+    clickCount++;
     successfulClickCount -= 1;
   }
-  if (tryCount === clickCount) {
-      updateGameBox('bg-blue', `Your average reaction time is ${reactionTime / successfulClickCount} ms, 
-      your accuracy is ${successfulClickCount / tryCount * 100}%`, 'block', 'none', 'block');
-      endgameText.textContent = 'Click to restart game.';
-      initVariables();
+  if (tryCount === clickCount && successfulClickCount > 0) {
+    updateGameBox(
+      'bg-blue',
+      `Your average reaction time is ${(
+        reactionTime / successfulClickCount
+      ).toFixed()} ms, 
+      your accuracy is ${((successfulClickCount / tryCount) * 100).toFixed()}%`,
+      'none',
+      'none',
+      'block'
+    );
+    endgameText.textContent = 'Click to restart game.';
+    initVariables();
+  } else if (successfulClickCount <= 0) {
+    updateGameBox(
+      'bg-blue',
+      `You never once hit the green block on time.`,
+      'block',
+      'none',
+      'block'
+    );
+    icon.className = `fa-solid fa-face-frown static-icon`;
+    endgameText.textContent = 'Click to restart game.';
+    initVariables();
   }
 });
