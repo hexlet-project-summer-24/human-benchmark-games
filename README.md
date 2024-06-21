@@ -1,7 +1,7 @@
 # HUMAN BENCHMARK
 
 <p align="center">
-  <img src="src/img/bolt-favicon.ico" width="100"/>
+  <img src="src/img/bolt-favicon.ico" width="50"/>
 </p>
 
 <p align="center">A collection of cognitive ability games from the "Мир Альф" team</p>
