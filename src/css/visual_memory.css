@@ -68,3 +68,8 @@ header.wrong {
     font-size: 30px;
   }
 
+  #statistics-chart {
+    max-width: 100%;
+    height: auto;
+  }
+

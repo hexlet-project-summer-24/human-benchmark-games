@@ -10,11 +10,17 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/visual_memory.css">
+
+    <!--statistic-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
     <title>Human Benchmark</title>
 </head>
 <body>
-    <header class="h-50 d-flex flex-column justify-content-center" id="header" style="padding-top: 30px;">
-        <div class="indicator" id="indicator"></div>
+    <header class="h-75 d-flex flex-column justify-content-center" id="header" style="padding-top: 30px;">
+        <div class="indicator h-75" id="indicator"></div>
         <div class="d-flex flex-column justify-content-center align-items-center h-100" id="play-screen">
             <i class="fa-regular fa-eye" style="font-size: 100px;"></i>
             <h1 style="font-size: 80px; font-weight: 400;">Visual Memory Test</h1>
@@ -22,9 +28,15 @@
             <button type="button" id="play-btn" class="btn btn-warning" style="font-size: 14px;" data-mdb-ripple-init>Start</button>
         </div>
     </header>
-    <footer class="h-50" id="footer"></footer>
+
+    <footer id="footer" class="d-flex justify-content-center align-items-center" style="max-height: 50vh;">
+        <div class="statistic d-flex flex-column justify-content-center align-items-center" style="height: 40vh; width: 40vw; margin-top: 5vh; background-color: #1f1f1f; border-radius: 10px;">
+            <h3 style="margin: 20px; color: #bfbfbf;">Statistic</h3>
+            <canvas id="statistics-chart" style="max-height: 70%; max-width: 90%; margin: 5px;" ></canvas>
+        </div>
+    </footer>
     <!-- MDB -->
-     
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.1/mdb.umd.min.js"></script>
     <script type="text/javascript" src="scripts/visual_memory.js"></script>
 </body>

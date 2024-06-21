@@ -1,0 +1,24 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.grid-item {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.grid-item.active {
+    background-color: #4da3ff;
+    color: #4da3ff;
+}

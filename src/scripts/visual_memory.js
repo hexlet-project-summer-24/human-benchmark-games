@@ -4,9 +4,9 @@ let cubeMatrixState = {
     mistakesCount: 0,
     correctIds: [],
     resolution: 3,
-    isPreview: true, 
+    isPreview: true,
     iswin: false,
-    gameEndFunc: null,   
+    gameEndFunc: null,
 }
 
 let gameState = {
@@ -60,7 +60,7 @@ function cubeClick () {
         cubeEl.classList.add('click')
         setTimeout(() => cubeEl.classList.remove('click'), 100);
         const indicator = document.getElementById('indicator')
-        if (!pressedCorrect.includes(cubeId) || !pressedMistakes.includes(cubeId)) {
+        if (!pressedCorrect.includes(cubeId) && !pressedMistakes.includes(cubeId)) {
             if (correctIds.includes(cubeId)) {
                 pressedCorrect.push(cubeId)
                 cubeEl.style.backgroundColor = '#1f1f1f';
@@ -100,10 +100,9 @@ function cubeClick () {
                             gameState.isDie = true
                             document.getElementById('gameInfo').remove()
                             createGameOver(gameState.level)
-                            //тут кидаем gameState.level в бд статистики
                         }
                     },1000)
-                    
+
                 }
             }
 
@@ -156,23 +155,23 @@ function createGameOver (level) {
     const indicatorDiv = document.createElement('div');
     indicatorDiv.className = 'indicator';
     indicatorDiv.id = 'indicator';
-    header.appendChild(indicatorDiv);  
+    header.appendChild(indicatorDiv);
     const playScreenDiv = document.createElement('div');
     playScreenDiv.className = 'd-flex flex-column justify-content-center align-items-center h-100';
     playScreenDiv.id = 'play-screen';
-    header.appendChild(playScreenDiv);   
+    header.appendChild(playScreenDiv);
     const eyeIcon = document.createElement('i');
     eyeIcon.className = 'fa-regular fa-eye';
     eyeIcon.style.fontSize = '100px';
-    playScreenDiv.appendChild(eyeIcon);   
+    playScreenDiv.appendChild(eyeIcon);
     const h2Element = document.createElement('h2');
     h2Element.style.cssText = 'font-size: 30px; font-weight: 400; margin: 20px;';
     h2Element.textContent = 'Visual Memory';
-    playScreenDiv.appendChild(h2Element);   
+    playScreenDiv.appendChild(h2Element);
     const h1Element = document.createElement('h1');
     h1Element.style.cssText = 'font-size: 80px; font-weight: 400; margin-bottom: 20px;';
     h1Element.textContent = `Level ${level}`
-    playScreenDiv.appendChild(h1Element);   
+    playScreenDiv.appendChild(h1Element);
     const buttonElement = document.createElement('button');
     buttonElement.type = 'button';
     buttonElement.id = 'replay-btn';
@@ -259,7 +258,7 @@ function newCubeMatrixState () {
         mistakesCount: 0,
         isDie: false,
         correctIds: [],
-        isPreview: true, 
+        isPreview: true,
         iswin: false,
         gameEndFunc: null,
     }
@@ -305,7 +304,7 @@ function gameIteration () {
         setTimeout(() => {
             fillAllCubes('#2e73b6');
             cubeMatrixState.isPreview = false;
-        } , 2000)  
+        } , 2000)
     })
 
 }
@@ -319,9 +318,104 @@ async function mainGame () {
 
 }
 
+
+
+function sendStatistics(level) {
+    if (level !== undefined) {
+      axios.post('http://localhost:3000/statistics', { level: level })
+        .then(response => {
+          console.log(response.data);
+          updateStatisticsChart();
+        })
+        .catch(error => console.error(error));
+    } else {
+      console.error('Error: level is not defined');
+    }
+  }
+
+
+
+
+
+  function getStatistics() {
+    return axios.get('http://localhost:3000/statistics')
+      .then(response => response.data)
+      .catch(error => console.error(error));
+  }
+
+  function updateStatisticsChart() {
+    getStatistics().then(statistics => {
+      const labels = statistics.map(stat => stat.level);
+      const data = statistics.map(stat => stat.count);
+
+      const ctx = document.getElementById('statistics-chart').getContext('2d');
+      if (window.statisticsChart) {
+        window.statisticsChart.destroy();
+      }
+      window.statisticsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: '#3284c8',
+            borderColor: '#3284c8',
+            borderWidth: 3,
+            fill: false,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            tension: 0.4
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: false,
+                text: 'Level',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: '#080808',
+                drawBorder: false,
+                drawTicks: false,
+                drawOnChartArea: true
+              }
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count',
+                color: 'white'
+              },
+              ticks: {
+                color: 'white'
+              },
+              display: false
+            }
+          }
+        }
+      });
+    });
+  }
+
 window.addEventListener('DOMContentLoaded', () => {
+    updateStatisticsChart();
     document.getElementById('play-btn').addEventListener('click', () => {
     document.getElementById('play-screen').remove()
     mainGame();
 })
 })
+
