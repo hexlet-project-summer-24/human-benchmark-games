@@ -9,7 +9,7 @@
 .grid-item {
     width: 100px;
     height: 100px;
-    background-color: #007bff;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,6 +19,6 @@
     transition: background-color 0.3s;
 }
 .grid-item.active {
-    background-color: white;
-    color: #007bff;
+    background-color: #4da3ff;
+    color: #4da3ff;
 }
