@@ -53,3 +53,6 @@ const setLanguage = (pageName, langCode) => () => {
         element.textContent = lang[pageName][langCode][key];
     });
 }
+
+
+
